@@ -122,4 +122,4 @@ The only limitation here is any properties with `function` values is not support
 
 ## iOS
 
-<img src="./docs/images/screenshot-ios.png" alt="screenshot-ios" width="320" height="568">
+<img src="./docs/images/screenshot-ios.PNG" alt="screenshot-ios" width="320" height="568">
