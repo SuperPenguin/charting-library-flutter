@@ -17,11 +17,12 @@ Before starting, read prerequisite.
 First you need to bundle charting-library as a single page web.
 You can use your own bundler/way. But if you need quick you can use method this example use:
 
-1. Grab `charting_library.esm.js` and `charting_library.d.ts` files
-2. In chart-project create folder `src/charting-library`
-3. Paste those files to `src/charting-library`, rename it to `index.js` and `index.d.ts` (renaming is optional as long your bundler know which file and definition to get)
-4. Run build script `npm run build`
-5. Bundled files should be in dist folder
+1. Grab these files and put it on `src/charting-library`
+
+![chart-src](./docs/images/chart-src.png)
+
+2. Run build script `npm run build`
+3. Bundled files should be in dist folder
 
 ## Add charting-library to flutter
 
