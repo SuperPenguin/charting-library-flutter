@@ -101,7 +101,7 @@ The only limitation here is any properties with `function` values is not support
 
 **Q:** Does the chart react to theme changes?
 
-**A:** Yes
+**A:** Yes if used under `MaterialApp`, I haven't test it under `CupertinoApp` yet.
 ##
 
 **Q:** There are some types/class I needed that not exist on `tvchart_types.dart` yet. How do I add them?
@@ -118,8 +118,12 @@ The only limitation here is any properties with `function` values is not support
 
 ## Android
 
+Android 11
+
 <img src="./docs/images/screenshot-android.png" alt="screenshot-android" width="360" height="800">
 
 ## iOS
+
+iOS 14.4.2 with `MaterialApp`
 
 <img src="./docs/images/screenshot-ios.PNG" alt="screenshot-ios" width="320" height="568">
