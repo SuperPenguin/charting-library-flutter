@@ -15,15 +15,11 @@ LocalhostManager get localhostManager {
 class LocalhostManager {
   static const int port = 8080;
   static LocalhostManager? _instance;
-  LocalhostManager._internal() {
-    _localhostServer = InAppLocalhostServer(
-      port: port,
-    );
-  }
+  LocalhostManager._internal();
 
-  late InAppLocalhostServer _localhostServer;
+  InAppLocalhostServer? _localhostServer;
 
-  bool get isRunning => _localhostServer.isRunning();
+  bool get isRunning => _localhostServer?.isRunning() ?? false;
 
   Uri _uri = Uri(
     scheme: 'http',
@@ -32,22 +28,21 @@ class LocalhostManager {
   );
 
   Uri get uri => _uri.replace();
-  Uri getUriWith({
-    // String? query,
-    // Map<String, dynamic>? queryParameters,
-    String? path,
-    // Iterable<String>? pathSegments,
-  }) =>
-      _uri.replace(
-        // query: query,
-        // queryParameters: queryParameters,
-        path: path,
-        // pathSegments: pathSegments,
-      );
+  Uri getUriWith({String? path}) => _uri.replace(path: path);
 
   Future<void> startServer() async {
-    if (!_localhostServer.isRunning()) {
-      await _localhostServer.start();
+    if (!isRunning) {
+      final server = InAppLocalhostServer(port: port);
+      _localhostServer = server;
+      await server.start();
+    }
+  }
+
+  Future<void> stopServer() async {
+    if (isRunning) {
+      final server = _localhostServer!;
+      await server.close();
+      _localhostServer = null;
     }
   }
 }
