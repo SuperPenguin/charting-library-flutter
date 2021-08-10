@@ -1,15 +1,17 @@
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
 import 'package:chart/commons/localhost.dart';
 import 'package:chart/commons/tzdt.dart';
 import 'package:chart/components/tvchart/tvchart_types.dart';
 import 'package:chart/data/historical.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 const _assetsPath = '/assets/tvchart/tvchart.html';
 
 class TVChart extends StatefulWidget {
+  const TVChart({Key? key}) : super(key: key);
+
   @override
   _TVChartState createState() => _TVChartState();
 }
@@ -36,17 +38,17 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
         return ChartingLibraryWidgetOptions(
           debug: false,
           locale: 'en',
-          symbol: 'COMPOSITE',
+          symbol: 'IDX:COMPOSITE',
           fullscreen: false,
           interval: '1D',
-          timezone: 'Asia/Jakarta',
+          timezone: Timezone.asiaJakarta,
           autosize: true,
           auto_save_delay: 1,
           theme: Theme.of(context).brightness == Brightness.light
-              ? 'Light'
-              : 'Dark',
+              ? ChartTheme.light
+              : ChartTheme.dark,
           saved_data: _savedData,
-          disabled_features: [
+          disabled_features: const [
             'header_fullscreen_button',
             'header_screenshot',
             'use_localstorage_for_settings',
@@ -54,7 +56,7 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
             'go_to_date',
             'timeframes_toolbar',
           ],
-          enabled_features: ['hide_left_toolbar_by_default'],
+          enabled_features: const ['hide_left_toolbar_by_default'],
         );
       },
     );
@@ -62,15 +64,15 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
     controller.addJavaScriptHandler(
       handlerName: 'onReady',
       callback: (arguments) {
-        return DatafeedConfiguration(
+        return const DatafeedConfiguration(
           exchanges: [
-            Exchange(
-              name: 'IDX',
-              value: 'IDX',
-              desc: 'Indonesia Stock Exchange',
-            ),
+            // Exchange(
+            //   name: 'IDX',
+            //   value: 'IDX',
+            //   desc: 'Indonesia Stock Exchange',
+            // ),
           ],
-          supported_resolutions: ['D'],
+          supported_resolutions: ['1D'],
           currency_codes: ['IDR'],
           supports_marks: false,
           supports_time: true,
@@ -122,17 +124,15 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
         LibrarySymbolInfo symbolInfo = LibrarySymbolInfo.fromJson(arguments[0]);
         // Only 1 resolution on example, not needed
         // String resolution = arguments[1];
-        int rangeStartDate = arguments[2]; // In seconds not milliseconds
-        int rangeEndDate = arguments[3]; // In seconds not milliseconds
-        // bool isFirstCall = arguments[4];
+        PeriodParams periodParams = PeriodParams.fromJson(arguments[2]);
 
         var symbol = historical.getSymbol(symbolInfo.name);
         if (symbol == null) {
           return 'Symbol not found';
         } else {
           var result = await symbol.getDataRange(
-            tzMillisecond(rangeStartDate * 1000),
-            tzMillisecond(rangeEndDate * 1000),
+            tzMillisecond(periodParams.from * 1000),
+            tzMillisecond(periodParams.to * 1000),
           );
 
           return {
@@ -260,7 +260,7 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
                       ),
                     ],
                   )
-                : SizedBox(),
+                : const SizedBox(),
             Expanded(
               child: InAppWebView(
                 initialUrlRequest: URLRequest(
@@ -276,9 +276,9 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
                   ),
                 ),
                 // Pass all gesture to Webview
-                gestureRecognizers: [
+                gestureRecognizers: {
                   Factory(() => EagerGestureRecognizer()),
-                ].toSet(),
+                },
                 onWebViewCreated: (controller) {
                   _controller = controller;
                   _attachHandler();
@@ -319,10 +319,12 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
                   });
                 },
                 onConsoleMessage: (controller, consoleMessage) {
-                  final level = consoleMessage.messageLevel.toString();
-                  final message = consoleMessage.message;
-
-                  print('Webview Console $level: $message');
+                  if (kDebugMode) {
+                    final level = consoleMessage.messageLevel.toString();
+                    final message = consoleMessage.message;
+                    // ignore: avoid_print
+                    print('Webview Console $level: $message');
+                  }
                 },
               ),
             ),
@@ -332,7 +334,7 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
     }
 
     if (_isLoading) {
-      stackContent.add(CircularProgressIndicator.adaptive());
+      stackContent.add(const CircularProgressIndicator.adaptive());
     }
 
     if (_isError) {
@@ -340,13 +342,14 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.error),
+            const Icon(Icons.error),
             Text(_isErrorMessage),
           ],
         ),
       );
     }
 
+    // ignore: avoid_unnecessary_containers
     return Container(
       child: Stack(
         alignment: Alignment.center,

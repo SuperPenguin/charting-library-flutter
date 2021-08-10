@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:chart/components/tvchart/tvchart.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -40,10 +42,10 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           appBar: !hideAppBar
               ? AppBar(
                   brightness: Brightness.dark,
-                  title: Text('Chart Example'),
+                  title: const Text('Chart Example'),
                   bottom: TabBar(
                     controller: _tabController,
-                    tabs: [
+                    tabs: const [
                       Tab(text: 'Home'),
                       Tab(text: 'Chart Library'),
                     ],
@@ -56,15 +58,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             ),
             child: TabBarView(
               controller: _tabController,
-              children: [
-                Container(
-                  child: Center(
-                    child: Text('Home Body'),
-                  ),
+              children: const [
+                Center(
+                  child: Text('Home Body'),
                 ),
-                Container(
-                  child: TVChart(),
-                ),
+                TVChart(),
               ],
             ),
           ),

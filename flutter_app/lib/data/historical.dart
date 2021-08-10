@@ -89,19 +89,27 @@ class Historical {
       ),
     );
   }
-  Map<String, SymbolData> _data = {};
+
+  final Map<String, SymbolData> _data = {};
 
   List<SearchSymbolResultItem> searchSymbol(
     String userInput,
     String rawSymbolType,
   ) {
-    SymbolType symbolType = getSymbolFromString(rawSymbolType);
+    final symbolType = getSymbolFromString(rawSymbolType);
     List<SearchSymbolResultItem> searchResult = [];
 
     _data.forEach((key, value) {
-      bool isMatch = symbolType == value.type &&
-          (value.code.toUpperCase().contains(userInput.toUpperCase()) ||
-              value.name.toUpperCase().contains(userInput.toUpperCase()));
+      final userInputCase = userInput.toUpperCase();
+      final codeCase = value.code.toUpperCase();
+      final nameCase = value.name.toUpperCase();
+      final symbolCase = value.symbolString.toUpperCase();
+      final typeMatch = symbolType == null || symbolType == value.type;
+
+      final isMatch = typeMatch &&
+          (codeCase.contains(userInputCase) ||
+              nameCase.contains(userInputCase) ||
+              symbolCase.contains(userInputCase));
 
       if (isMatch) {
         searchResult.add(value.getSearchSymbolInfo());
@@ -111,8 +119,15 @@ class Historical {
     return searchResult;
   }
 
-  SymbolData? getSymbol(String code) {
-    return _data[code];
+  SymbolData? getSymbol(String symbol) {
+    if (symbol.contains(':')) {
+      for (final s in _data.entries) {
+        if (symbol == s.value.symbolString) {
+          return s.value;
+        }
+      }
+    }
+    return _data[symbol];
   }
 
   Future<List<OHLCData>> getDataRange(
@@ -135,8 +150,8 @@ class SymbolData {
   WeekSessions session;
   SymbolExchange exchange;
   SymbolExchange listedExchange;
-  TradingViewTimezone timezone;
-  SymbolFormat format;
+  Timezone timezone;
+  SeriesFormat format;
 
   double pricescale;
   double minmov;
@@ -150,29 +165,32 @@ class SymbolData {
     this.description = '',
     this.type = SymbolType.Index,
     WeekSessions? session,
-    this.exchange = SymbolExchange.IDX,
-    this.listedExchange = SymbolExchange.IDX,
-    this.timezone = TradingViewTimezone.AsiaJakarta,
-    this.format = SymbolFormat.Price,
+    this.exchange = SymbolExchange.idx,
+    this.listedExchange = SymbolExchange.idx,
+    this.timezone = Timezone.asiaJakarta,
+    this.format = SeriesFormat.price,
     this.pricescale = 100,
     this.minmov = 1,
     List<String>? resolutions,
     List<OHLCData>? data,
-  })  : this.session = session ?? _defaultSession(),
-        this.data = data ?? _buildDummyData(),
-        this.resolutions = resolutions ?? _defaultResolutions();
+  })  : session = session ?? _defaultSession(),
+        data = data ?? _buildDummyData(),
+        resolutions = resolutions ?? _defaultResolutions();
+
+  String get symbolString => '${exchange.jsValue}:$code';
 
   LibrarySymbolInfo getLibrarySymbolInfo() {
     return LibrarySymbolInfo(
-      name: code,
+      name: symbolString,
+      ticker: code,
       full_name: name,
       description: description,
       type: type.jsValue,
       session: session.toString(),
       exchange: exchange.jsValue,
       listed_exchange: listedExchange.jsValue,
-      timezone: timezone.stringValue,
-      format: format.jsValue,
+      timezone: timezone,
+      format: format,
       pricescale: pricescale,
       minmov: minmov,
       supported_resolutions: List.from(resolutions),
@@ -181,7 +199,7 @@ class SymbolData {
 
   SearchSymbolResultItem getSearchSymbolInfo() {
     return SearchSymbolResultItem(
-      symbol: code,
+      symbol: symbolString,
       ticker: code,
       full_name: name,
       type: type.jsValue,
@@ -195,12 +213,12 @@ class SymbolData {
     TZDateTime to,
   ) async {
     // Simulate request delay
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
 
     List<OHLCData> result = [];
 
-    for (int i = 0; i < this.data.length; i++) {
-      final d = this.data[i];
+    for (int i = 0; i < data.length; i++) {
+      final d = data[i];
 
       if (d.dt.isBefore(from)) {
         continue;
@@ -250,10 +268,11 @@ class SymbolData {
       double close = values.last;
       double high = open;
       double low = open;
-      values.forEach((value) {
+
+      for (final value in values) {
         if (value > high) high = value;
         if (value < low) low = value;
-      });
+      }
 
       // 1,000 ~ 1,000,000
       int volume = intRandomRange(10000, 1000000);
@@ -270,7 +289,7 @@ class SymbolData {
       );
 
       price = close;
-      time = time.add(Duration(days: 1));
+      time = time.add(const Duration(days: 1));
     }
 
     return dummy;
@@ -278,6 +297,7 @@ class SymbolData {
 }
 
 abstract class Session {
+  @override
   String toString();
 }
 
@@ -395,7 +415,7 @@ class OHLCData {
   final double close;
   final int volume;
 
-  OHLCData({
+  const OHLCData({
     required this.dt,
     required this.open,
     required this.high,
@@ -406,12 +426,15 @@ class OHLCData {
 }
 
 enum SymbolType {
+  // ignore: constant_identifier_names
   Stock,
+  // ignore: constant_identifier_names
   Index,
+  // ignore: constant_identifier_names
   Forex,
 }
 
-SymbolType getSymbolFromString(String symbolString) {
+SymbolType? getSymbolFromString(String symbolString) {
   switch (symbolString) {
     case 'stock':
       return SymbolType.Stock;
@@ -423,7 +446,7 @@ SymbolType getSymbolFromString(String symbolString) {
       return SymbolType.Forex;
 
     default:
-      throw Exception('Trying parse unknown SymbolType');
+      return null;
   }
 }
 
@@ -442,329 +465,15 @@ extension on SymbolType {
   }
 }
 
-enum SymbolFormat {
-  Price,
-  Volume,
-}
-
-extension on SymbolFormat {
-  String get jsValue {
-    switch (this) {
-      case SymbolFormat.Price:
-        return 'price';
-
-      case SymbolFormat.Volume:
-        return 'volume';
-    }
-  }
-}
-
 enum SymbolExchange {
-  IDX,
+  idx,
 }
 
 extension on SymbolExchange {
   String get jsValue {
     switch (this) {
-      case SymbolExchange.IDX:
+      case SymbolExchange.idx:
         return 'IDX';
-    }
-  }
-}
-
-enum TradingViewTimezone {
-  UTC,
-  AfricaCairo,
-  AfricaJohannesburg,
-  AfricaLagos,
-  AmericaArgentinaBuenosAires,
-  AmericaBogota,
-  AmericaCaracas,
-  AmericaChicago,
-  AmericaElSalvador,
-  AmericaJuneau,
-  AmericaLima,
-  AmericaLosAngeles,
-  AmericaMexicoCity,
-  AmericaNewYork,
-  AmericaPhoenix,
-  AmericaSantiago,
-  AmericaSaoPaulo,
-  AmericaToronto,
-  AmericaVancouver,
-  AsiaAlmaty,
-  AsiaAshkhabad,
-  AsiaBahrain,
-  AsiaBangkok,
-  AsiaChongqing,
-  AsiaDubai,
-  AsiaHoChiMinh,
-  AsiaHongKong,
-  AsiaJakarta,
-  AsiaJerusalem,
-  AsiaKathmandu,
-  AsiaKolkata,
-  AsiaKuwait,
-  AsiaMuscat,
-  AsiaQatar,
-  AsiaRiyadh,
-  AsiaSeoul,
-  AsiaShanghai,
-  AsiaSingapore,
-  AsiaTaipei,
-  AsiaTehran,
-  AsiaTokyo,
-  AtlanticReykjavik,
-  AustraliaACT,
-  AustraliaAdelaide,
-  AustraliaBrisbane,
-  AustraliaPerth,
-  AustraliaSydney,
-  EuropeAthens,
-  EuropeBelgrade,
-  EuropeBerlin,
-  EuropeCopenhagen,
-  EuropeHelsinki,
-  EuropeIstanbul,
-  EuropeLondon,
-  EuropeLuxembourg,
-  EuropeMadrid,
-  EuropeMoscow,
-  EuropeOslo,
-  EuropeParis,
-  EuropeRiga,
-  EuropeRome,
-  EuropeStockholm,
-  EuropeTallinn,
-  EuropeVilnius,
-  EuropeWarsaw,
-  EuropeZurich,
-  PacificAuckland,
-  PacificChatham,
-  PacificFakaofo,
-  PacificHonolulu,
-  PacificNorfolk,
-  USMountain,
-}
-
-extension on TradingViewTimezone {
-  String get stringValue {
-    switch (this) {
-      case TradingViewTimezone.UTC:
-        return 'Etc/UTC';
-
-      case TradingViewTimezone.AfricaCairo:
-        return 'Africa/Cairo';
-
-      case TradingViewTimezone.AfricaJohannesburg:
-        return 'Africa/Johannesburg';
-
-      case TradingViewTimezone.AfricaLagos:
-        return 'Africa/Lagos';
-
-      case TradingViewTimezone.AmericaArgentinaBuenosAires:
-        return 'America/Argentina/Buenos_Aires';
-
-      case TradingViewTimezone.AmericaBogota:
-        return 'America/Bogota';
-
-      case TradingViewTimezone.AmericaCaracas:
-        return 'America/Caracas';
-
-      case TradingViewTimezone.AmericaChicago:
-        return 'America/Chicago';
-
-      case TradingViewTimezone.AmericaElSalvador:
-        return 'America/El_Salvador';
-
-      case TradingViewTimezone.AmericaJuneau:
-        return 'America/Juneau';
-
-      case TradingViewTimezone.AmericaLima:
-        return 'America/Lima';
-
-      case TradingViewTimezone.AmericaLosAngeles:
-        return 'America/Los_Angeles';
-
-      case TradingViewTimezone.AmericaMexicoCity:
-        return 'America/Mexico_City';
-
-      case TradingViewTimezone.AmericaNewYork:
-        return 'America/New_York';
-
-      case TradingViewTimezone.AmericaPhoenix:
-        return 'America/Phoenix';
-
-      case TradingViewTimezone.AmericaSantiago:
-        return 'America/Santiago';
-
-      case TradingViewTimezone.AmericaSaoPaulo:
-        return 'America/Sao_Paulo';
-
-      case TradingViewTimezone.AmericaToronto:
-        return 'America/Toronto';
-
-      case TradingViewTimezone.AmericaVancouver:
-        return 'America/Vancouver';
-
-      case TradingViewTimezone.AsiaAlmaty:
-        return 'Asia/Almaty';
-
-      case TradingViewTimezone.AsiaAshkhabad:
-        return 'Asia/Ashkhabad';
-
-      case TradingViewTimezone.AsiaBahrain:
-        return 'Asia/Bahrain';
-
-      case TradingViewTimezone.AsiaBangkok:
-        return 'Asia/Bangkok';
-
-      case TradingViewTimezone.AsiaChongqing:
-        return 'Asia/Chongqing';
-
-      case TradingViewTimezone.AsiaDubai:
-        return 'Asia/Dubai';
-
-      case TradingViewTimezone.AsiaHoChiMinh:
-        return 'Asia/Ho_Chi_Minh';
-
-      case TradingViewTimezone.AsiaHongKong:
-        return 'Asia/Hong_Kong';
-
-      case TradingViewTimezone.AsiaJakarta:
-        return 'Asia/Jakarta';
-
-      case TradingViewTimezone.AsiaJerusalem:
-        return 'Asia/Jerusalem';
-
-      case TradingViewTimezone.AsiaKathmandu:
-        return 'Asia/Kathmandu';
-
-      case TradingViewTimezone.AsiaKolkata:
-        return 'Asia/Kolkata';
-
-      case TradingViewTimezone.AsiaKuwait:
-        return 'Asia/Kuwait';
-
-      case TradingViewTimezone.AsiaMuscat:
-        return 'Asia/Muscat';
-
-      case TradingViewTimezone.AsiaQatar:
-        return 'Asia/Qatar';
-
-      case TradingViewTimezone.AsiaRiyadh:
-        return 'Asia/Riyadh';
-
-      case TradingViewTimezone.AsiaSeoul:
-        return 'Asia/Seoul';
-
-      case TradingViewTimezone.AsiaShanghai:
-        return 'Asia/Shanghai';
-
-      case TradingViewTimezone.AsiaSingapore:
-        return 'Asia/Singapore';
-
-      case TradingViewTimezone.AsiaTaipei:
-        return 'Asia/Taipei';
-
-      case TradingViewTimezone.AsiaTehran:
-        return 'Asia/Tehran';
-
-      case TradingViewTimezone.AsiaTokyo:
-        return 'Asia/Tokyo';
-
-      case TradingViewTimezone.AtlanticReykjavik:
-        return 'Atlantic/Reykjavik';
-
-      case TradingViewTimezone.AustraliaACT:
-        return 'Australia/ACT';
-
-      case TradingViewTimezone.AustraliaAdelaide:
-        return 'Australia/Adelaide';
-
-      case TradingViewTimezone.AustraliaBrisbane:
-        return 'Australia/Brisbane';
-
-      case TradingViewTimezone.AustraliaPerth:
-        return 'Australia/Perth';
-
-      case TradingViewTimezone.AustraliaSydney:
-        return 'Australia/Sydney';
-
-      case TradingViewTimezone.EuropeAthens:
-        return 'Europe/Athens';
-
-      case TradingViewTimezone.EuropeBelgrade:
-        return 'Europe/Belgrade';
-
-      case TradingViewTimezone.EuropeBerlin:
-        return 'Europe/Berlin';
-
-      case TradingViewTimezone.EuropeCopenhagen:
-        return 'Europe/Copenhagen';
-
-      case TradingViewTimezone.EuropeHelsinki:
-        return 'Europe/Helsinki';
-
-      case TradingViewTimezone.EuropeIstanbul:
-        return 'Europe/Istanbul';
-
-      case TradingViewTimezone.EuropeLondon:
-        return 'Europe/London';
-
-      case TradingViewTimezone.EuropeLuxembourg:
-        return 'Europe/Luxembourg';
-
-      case TradingViewTimezone.EuropeMadrid:
-        return 'Europe/Madrid';
-
-      case TradingViewTimezone.EuropeMoscow:
-        return 'Europe/Moscow';
-
-      case TradingViewTimezone.EuropeOslo:
-        return 'Europe/Oslo';
-
-      case TradingViewTimezone.EuropeParis:
-        return 'Europe/Paris';
-
-      case TradingViewTimezone.EuropeRiga:
-        return 'Europe/Riga';
-
-      case TradingViewTimezone.EuropeRome:
-        return 'Europe/Rome';
-
-      case TradingViewTimezone.EuropeStockholm:
-        return 'Europe/Stockholm';
-
-      case TradingViewTimezone.EuropeTallinn:
-        return 'Europe/Tallinn';
-
-      case TradingViewTimezone.EuropeVilnius:
-        return 'Europe/Vilnius';
-
-      case TradingViewTimezone.EuropeWarsaw:
-        return 'Europe/Warsaw';
-
-      case TradingViewTimezone.EuropeZurich:
-        return 'Europe/Zurich';
-
-      case TradingViewTimezone.PacificAuckland:
-        return 'Pacific/Auckland';
-
-      case TradingViewTimezone.PacificChatham:
-        return 'Pacific/Chatham';
-
-      case TradingViewTimezone.PacificFakaofo:
-        return 'Pacific/Fakaofo';
-
-      case TradingViewTimezone.PacificHonolulu:
-        return 'Pacific/Honolulu';
-
-      case TradingViewTimezone.PacificNorfolk:
-        return 'Pacific/Norfolk';
-
-      case TradingViewTimezone.USMountain:
-        return 'US/Mountain';
     }
   }
 }

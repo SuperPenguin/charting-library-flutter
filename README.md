@@ -60,8 +60,6 @@ The only limitation here is any properties with `function` values is not support
 </dict>
 ```
 
-- Sometimes, localhost server just went dead on iOS, I don't know why. The tvchart components always check if localhost running on initState.
-
 # FAQ
 
 **Q:** I don't have access to charting-library, help!

@@ -73,7 +73,7 @@ String tzFormat(
   String format, {
   String locale = 'en_US',
 }) {
-  var locFmts = _fmts.putIfAbsent(locale, () => Map());
-  var fmt = locFmts.putIfAbsent(format, () => DateFormat(format, locale));
+  final locFmts = _fmts.putIfAbsent(locale, () => {});
+  final fmt = locFmts.putIfAbsent(format, () => DateFormat(format, locale));
   return fmt.format(tzdt);
 }

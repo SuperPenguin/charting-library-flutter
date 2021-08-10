@@ -4,6 +4,301 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'tvchart_types.g.dart';
 
+enum ChartTheme {
+  @JsonValue('Light')
+  light,
+
+  @JsonValue('Dark')
+  dark,
+}
+
+enum AccessListType {
+  @JsonValue('black')
+  black,
+
+  @JsonValue('white')
+  white,
+}
+
+enum Timezone {
+  @JsonValue('Etc/UTC')
+  utc,
+
+  @JsonValue('Africa/Cairo')
+  africaCairo,
+
+  @JsonValue('Africa/Johannesburg')
+  africaJohannesburg,
+
+  @JsonValue('Africa/Lagos')
+  africaLagos,
+
+  @JsonValue('America/Argentina/Buenos_Aires')
+  americaArgentinaBuenosAires,
+
+  @JsonValue('America/Bogota')
+  americaBogota,
+
+  @JsonValue('America/Caracas')
+  americaCaracas,
+
+  @JsonValue('America/Chicago')
+  americaChicago,
+
+  @JsonValue('America/El_Salvador')
+  americaElSalvador,
+
+  @JsonValue('America/Juneau')
+  americaJuneau,
+
+  @JsonValue('America/Lima')
+  americaLima,
+
+  @JsonValue('America/Los_Angeles')
+  americaLosAngeles,
+
+  @JsonValue('America/Mexico_City')
+  americaMexicoCity,
+
+  @JsonValue('America/New_York')
+  americaNewYork,
+
+  @JsonValue('America/Phoenix')
+  americaPhoenix,
+
+  @JsonValue('America/Santiago')
+  americaSantiago,
+
+  @JsonValue('America/Sao_Paulo')
+  americaSaoPaulo,
+
+  @JsonValue('America/Toronto')
+  americaToronto,
+
+  @JsonValue('America/Vancouver')
+  americaVancouver,
+
+  @JsonValue('Asia/Almaty')
+  asiaAlmaty,
+
+  @JsonValue('Asia/Ashkhabad')
+  asiaAshkhabad,
+
+  @JsonValue('Asia/Bahrain')
+  asiaBahrain,
+
+  @JsonValue('Asia/Bangkok')
+  asiaBangkok,
+
+  @JsonValue('Asia/Chongqing')
+  asiaChongqing,
+
+  @JsonValue('Asia/Dubai')
+  asiaDubai,
+
+  @JsonValue('Asia/Ho_Chi_Minh')
+  asiaHoChiMinh,
+
+  @JsonValue('Asia/Hong_Kong')
+  asiaHongKong,
+
+  @JsonValue('Asia/Jakarta')
+  asiaJakarta,
+
+  @JsonValue('Asia/Jerusalem')
+  asiaJerusalem,
+
+  @JsonValue('Asia/Kathmandu')
+  asiaKathmandu,
+
+  @JsonValue('Asia/Kolkata')
+  asiaKolkata,
+
+  @JsonValue('Asia/Kuwait')
+  asiaKuwait,
+
+  @JsonValue('Asia/Muscat')
+  asiaMuscat,
+
+  @JsonValue('Asia/Qatar')
+  asiaQatar,
+
+  @JsonValue('Asia/Riyadh')
+  asiaRiyadh,
+
+  @JsonValue('Asia/Seoul')
+  asiaSeoul,
+
+  @JsonValue('Asia/Shanghai')
+  asiaShanghai,
+
+  @JsonValue('Asia/Singapore')
+  asiaSingapore,
+
+  @JsonValue('Asia/Taipei')
+  asiaTaipei,
+
+  @JsonValue('Asia/Tehran')
+  asiaTehran,
+
+  @JsonValue('Asia/Tokyo')
+  asiaTokyo,
+
+  @JsonValue('Atlantic/Reykjavik')
+  atlanticReykjavik,
+
+  @JsonValue('Australia/ACT')
+  australiaACT,
+
+  @JsonValue('Australia/Adelaide')
+  australiaAdelaide,
+
+  @JsonValue('Australia/Brisbane')
+  australiaBrisbane,
+
+  @JsonValue('Australia/Perth')
+  australiaPerth,
+
+  @JsonValue('Australia/Sydney')
+  australiaSydney,
+
+  @JsonValue('Europe/Amsterdam')
+  europeAmsterdam,
+
+  @JsonValue('Europe/Athens')
+  europeAthens,
+
+  @JsonValue('Europe/Belgrade')
+  europeBelgrade,
+
+  @JsonValue('Europe/Berlin')
+  europeBerlin,
+
+  @JsonValue('Europe/Brussels')
+  europeBrussels,
+
+  @JsonValue('Europe/Copenhagen')
+  europeCopenhagen,
+
+  @JsonValue('Europe/Dublin')
+  europeDublin,
+
+  @JsonValue('Europe/Helsinki')
+  europeHelsinki,
+
+  @JsonValue('Europe/Istanbul')
+  europeIstanbul,
+
+  @JsonValue('Europe/Lisbon')
+  europeLisbon,
+
+  @JsonValue('Europe/London')
+  europeLondon,
+
+  @JsonValue('Europe/Luxembourg')
+  europeLuxembourg,
+
+  @JsonValue('Europe/Madrid')
+  europeMadrid,
+
+  @JsonValue('Europe/Malta')
+  europeMalta,
+
+  @JsonValue('Europe/Moscow')
+  europeMoscow,
+
+  @JsonValue('Europe/Oslo')
+  europeOslo,
+
+  @JsonValue('Europe/Paris')
+  europeParis,
+
+  @JsonValue('Europe/Riga')
+  europeRiga,
+
+  @JsonValue('Europe/Rome')
+  europeRome,
+
+  @JsonValue('Europe/Stockholm')
+  europeStockholm,
+
+  @JsonValue('Europe/Tallinn')
+  europeTallinn,
+
+  @JsonValue('Europe/Vilnius')
+  europeVilnius,
+
+  @JsonValue('Europe/Warsaw')
+  europeWarsaw,
+
+  @JsonValue('Europe/Zurich')
+  europeZurich,
+
+  @JsonValue('Pacific/Auckland')
+  pacificAuckland,
+
+  @JsonValue('Pacific/Chatham')
+  pacificChatham,
+
+  @JsonValue('Pacific/Fakaofo')
+  pacificFakaofo,
+
+  @JsonValue('Pacific/Honolulu')
+  pacificHonolulu,
+
+  @JsonValue('Pacific/Norfolk')
+  pacificNorfolk,
+
+  @JsonValue('US/Mountain')
+  usMountain,
+
+  /// Only use this when the parameters/function actually could accept timezone `exchange`
+  @JsonValue('exchange')
+  exchange,
+}
+
+enum SeriesFormat {
+  @JsonValue('price')
+  price,
+
+  @JsonValue('volume')
+  volume,
+}
+
+enum DataStatus {
+  @JsonValue('streaming')
+  streaming,
+
+  @JsonValue('endofday')
+  endOfDay,
+
+  @JsonValue('pulsed')
+  pulsed,
+
+  @JsonValue('delayed_streaming')
+  delayedStreaming,
+}
+
+@immutable
+@JsonSerializable(includeIfNull: false)
+class PeriodParams {
+  final int from;
+  final int to;
+  final int countBack;
+  final bool firstDataRequest;
+
+  const PeriodParams({
+    required this.from,
+    required this.to,
+    required this.countBack,
+    required this.firstDataRequest,
+  });
+
+  factory PeriodParams.fromJson(Map<String, dynamic> json) =>
+      _$PeriodParamsFromJson(json);
+  Map<String, dynamic> toJson() => _$PeriodParamsToJson(this);
+}
+
 @immutable
 @JsonSerializable(includeIfNull: false)
 class Bar {
@@ -14,7 +309,7 @@ class Bar {
   final double close;
   final int? volume;
 
-  Bar({
+  const Bar({
     required this.time,
     required this.open,
     required this.high,
@@ -34,7 +329,7 @@ class Exchange {
   final String name;
   final String desc;
 
-  Exchange({
+  const Exchange({
     required this.value,
     required this.name,
     required this.desc,
@@ -56,7 +351,7 @@ class DatafeedConfiguration {
   final bool? supports_timescale_marks;
   final List<DatafeedSymbolType>? symbols_types;
 
-  DatafeedConfiguration({
+  const DatafeedConfiguration({
     this.exchanges,
     this.supported_resolutions,
     this.currency_codes,
@@ -77,7 +372,7 @@ class DatafeedSymbolType {
   final String name;
   final String value;
 
-  DatafeedSymbolType({
+  const DatafeedSymbolType({
     required this.name,
     required this.value,
   });
@@ -97,7 +392,7 @@ class SearchSymbolResultItem {
   final String ticker;
   final String type;
 
-  SearchSymbolResultItem({
+  const SearchSymbolResultItem({
     required this.symbol,
     required this.full_name,
     required this.description,
@@ -126,8 +421,8 @@ class LibrarySymbolInfo {
   final String? corrections;
   final String exchange;
   final String listed_exchange;
-  final String timezone;
-  final String format;
+  final Timezone timezone;
+  final SeriesFormat format;
   final double pricescale;
   final double minmov;
   final bool? fractional;
@@ -136,11 +431,11 @@ class LibrarySymbolInfo {
   final List<String> supported_resolutions;
   final List<String>? intraday_multipliers;
   final bool? has_seconds;
+  final bool? has_ticks;
   final List<String>? seconds_multipliers;
   final bool? has_daily;
   final bool? has_weekly_and_monthly;
   final bool? has_empty_bars;
-  final bool? force_session_rebuild;
   final bool? has_no_volume;
   final double? volume_precision;
   final String? data_status;
@@ -151,7 +446,7 @@ class LibrarySymbolInfo {
   final String? currency_code;
   final String? original_currency_code;
 
-  LibrarySymbolInfo({
+  const LibrarySymbolInfo({
     required this.name,
     required this.full_name,
     this.base_name,
@@ -174,11 +469,11 @@ class LibrarySymbolInfo {
     required this.supported_resolutions,
     this.intraday_multipliers,
     this.has_seconds,
+    this.has_ticks,
     this.seconds_multipliers,
     this.has_daily,
     this.has_weekly_and_monthly,
     this.has_empty_bars,
-    this.force_session_rebuild,
     this.has_no_volume,
     this.volume_precision,
     this.data_status,
@@ -222,7 +517,7 @@ class ChartingLibraryWidgetOptions {
   final int? study_count_limit;
   final int? symbol_search_request_delay;
   final String? timeframe;
-  final String? timezone;
+  final Timezone? timezone;
   final String? toolbar_bg;
   final int? width;
   final String? charts_storage_url;
@@ -230,7 +525,9 @@ class ChartingLibraryWidgetOptions {
   final String? client_id;
   final String? user_id;
   final bool? load_last_chart;
+  // TODO: Use custom class that handle Map<String, String | num | bool>
   final Map<String, dynamic>? studies_overrides;
+  // TODO: Use custom class that handle Map<String, String | num | bool>
   final Map<String, dynamic>? overrides;
   final String? snapshot_url;
   final String? preset;
@@ -238,10 +535,10 @@ class ChartingLibraryWidgetOptions {
   final String? custom_css_url;
   final Favorites? favorites;
   final LoadingScreenOptions? loading_screen;
-  final String? theme;
+  final ChartTheme? theme;
   final List<CompareSymbol>? compare_symbols;
 
-  ChartingLibraryWidgetOptions({
+  const ChartingLibraryWidgetOptions({
     required this.interval,
     this.symbol,
     this.auto_save_delay,
@@ -292,7 +589,7 @@ class SavedStateMetaInfo {
   final String name;
   final String description;
 
-  SavedStateMetaInfo({
+  const SavedStateMetaInfo({
     required this.uid,
     required this.name,
     required this.description,
@@ -309,7 +606,7 @@ class CompareSymbol {
   final String symbol;
   final String title;
 
-  CompareSymbol({
+  const CompareSymbol({
     required this.symbol,
     required this.title,
   });
@@ -325,7 +622,7 @@ class LoadingScreenOptions {
   final String? foregroundColor;
   final String? backgroundColor;
 
-  LoadingScreenOptions({
+  const LoadingScreenOptions({
     this.foregroundColor,
     this.backgroundColor,
   });
@@ -341,7 +638,7 @@ class Favorites {
   final List<String> intervals;
   final List<String> chartTypes;
 
-  Favorites({
+  const Favorites({
     required this.intervals,
     required this.chartTypes,
   });
@@ -359,7 +656,7 @@ class TimeFrameItem {
   final String? description;
   final String? title;
 
-  TimeFrameItem({
+  const TimeFrameItem({
     required this.text,
     required this.resolution,
     this.description,
@@ -376,7 +673,7 @@ class TimeFrameItem {
 class NumericFormattingParams {
   final String decimal_sign;
 
-  NumericFormattingParams({
+  const NumericFormattingParams({
     required this.decimal_sign,
   });
 
@@ -388,10 +685,10 @@ class NumericFormattingParams {
 @immutable
 @JsonSerializable(includeIfNull: false)
 class AccessList {
-  final String type;
+  final AccessListType type;
   final List<AccessListItem> tools;
 
-  AccessList({
+  const AccessList({
     required this.type,
     required this.tools,
   });
@@ -407,7 +704,7 @@ class AccessListItem {
   final String name;
   final bool? grayed;
 
-  AccessListItem({
+  const AccessListItem({
     required this.name,
     this.grayed,
   });

@@ -6,6 +6,23 @@ part of 'tvchart_types.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+PeriodParams _$PeriodParamsFromJson(Map<String, dynamic> json) {
+  return PeriodParams(
+    from: json['from'] as int,
+    to: json['to'] as int,
+    countBack: json['countBack'] as int,
+    firstDataRequest: json['firstDataRequest'] as bool,
+  );
+}
+
+Map<String, dynamic> _$PeriodParamsToJson(PeriodParams instance) =>
+    <String, dynamic>{
+      'from': instance.from,
+      'to': instance.to,
+      'countBack': instance.countBack,
+      'firstDataRequest': instance.firstDataRequest,
+    };
+
 Bar _$BarFromJson(Map<String, dynamic> json) {
   return Bar(
     time: json['time'] as int,
@@ -142,8 +159,8 @@ LibrarySymbolInfo _$LibrarySymbolInfoFromJson(Map<String, dynamic> json) {
     corrections: json['corrections'] as String?,
     exchange: json['exchange'] as String,
     listed_exchange: json['listed_exchange'] as String,
-    timezone: json['timezone'] as String,
-    format: json['format'] as String,
+    timezone: _$enumDecode(_$TimezoneEnumMap, json['timezone']),
+    format: _$enumDecode(_$SeriesFormatEnumMap, json['format']),
     pricescale: (json['pricescale'] as num).toDouble(),
     minmov: (json['minmov'] as num).toDouble(),
     fractional: json['fractional'] as bool?,
@@ -156,13 +173,13 @@ LibrarySymbolInfo _$LibrarySymbolInfoFromJson(Map<String, dynamic> json) {
         ?.map((e) => e as String)
         .toList(),
     has_seconds: json['has_seconds'] as bool?,
+    has_ticks: json['has_ticks'] as bool?,
     seconds_multipliers: (json['seconds_multipliers'] as List<dynamic>?)
         ?.map((e) => e as String)
         .toList(),
     has_daily: json['has_daily'] as bool?,
     has_weekly_and_monthly: json['has_weekly_and_monthly'] as bool?,
     has_empty_bars: json['has_empty_bars'] as bool?,
-    force_session_rebuild: json['force_session_rebuild'] as bool?,
     has_no_volume: json['has_no_volume'] as bool?,
     volume_precision: (json['volume_precision'] as num?)?.toDouble(),
     data_status: json['data_status'] as String?,
@@ -197,8 +214,8 @@ Map<String, dynamic> _$LibrarySymbolInfoToJson(LibrarySymbolInfo instance) {
   writeNotNull('corrections', instance.corrections);
   val['exchange'] = instance.exchange;
   val['listed_exchange'] = instance.listed_exchange;
-  val['timezone'] = instance.timezone;
-  val['format'] = instance.format;
+  val['timezone'] = _$TimezoneEnumMap[instance.timezone];
+  val['format'] = _$SeriesFormatEnumMap[instance.format];
   val['pricescale'] = instance.pricescale;
   val['minmov'] = instance.minmov;
   writeNotNull('fractional', instance.fractional);
@@ -207,11 +224,11 @@ Map<String, dynamic> _$LibrarySymbolInfoToJson(LibrarySymbolInfo instance) {
   val['supported_resolutions'] = instance.supported_resolutions;
   writeNotNull('intraday_multipliers', instance.intraday_multipliers);
   writeNotNull('has_seconds', instance.has_seconds);
+  writeNotNull('has_ticks', instance.has_ticks);
   writeNotNull('seconds_multipliers', instance.seconds_multipliers);
   writeNotNull('has_daily', instance.has_daily);
   writeNotNull('has_weekly_and_monthly', instance.has_weekly_and_monthly);
   writeNotNull('has_empty_bars', instance.has_empty_bars);
-  writeNotNull('force_session_rebuild', instance.force_session_rebuild);
   writeNotNull('has_no_volume', instance.has_no_volume);
   writeNotNull('volume_precision', instance.volume_precision);
   writeNotNull('data_status', instance.data_status);
@@ -223,6 +240,118 @@ Map<String, dynamic> _$LibrarySymbolInfoToJson(LibrarySymbolInfo instance) {
   writeNotNull('original_currency_code', instance.original_currency_code);
   return val;
 }
+
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
+}
+
+const _$TimezoneEnumMap = {
+  Timezone.utc: 'Etc/UTC',
+  Timezone.africaCairo: 'Africa/Cairo',
+  Timezone.africaJohannesburg: 'Africa/Johannesburg',
+  Timezone.africaLagos: 'Africa/Lagos',
+  Timezone.americaArgentinaBuenosAires: 'America/Argentina/Buenos_Aires',
+  Timezone.americaBogota: 'America/Bogota',
+  Timezone.americaCaracas: 'America/Caracas',
+  Timezone.americaChicago: 'America/Chicago',
+  Timezone.americaElSalvador: 'America/El_Salvador',
+  Timezone.americaJuneau: 'America/Juneau',
+  Timezone.americaLima: 'America/Lima',
+  Timezone.americaLosAngeles: 'America/Los_Angeles',
+  Timezone.americaMexicoCity: 'America/Mexico_City',
+  Timezone.americaNewYork: 'America/New_York',
+  Timezone.americaPhoenix: 'America/Phoenix',
+  Timezone.americaSantiago: 'America/Santiago',
+  Timezone.americaSaoPaulo: 'America/Sao_Paulo',
+  Timezone.americaToronto: 'America/Toronto',
+  Timezone.americaVancouver: 'America/Vancouver',
+  Timezone.asiaAlmaty: 'Asia/Almaty',
+  Timezone.asiaAshkhabad: 'Asia/Ashkhabad',
+  Timezone.asiaBahrain: 'Asia/Bahrain',
+  Timezone.asiaBangkok: 'Asia/Bangkok',
+  Timezone.asiaChongqing: 'Asia/Chongqing',
+  Timezone.asiaDubai: 'Asia/Dubai',
+  Timezone.asiaHoChiMinh: 'Asia/Ho_Chi_Minh',
+  Timezone.asiaHongKong: 'Asia/Hong_Kong',
+  Timezone.asiaJakarta: 'Asia/Jakarta',
+  Timezone.asiaJerusalem: 'Asia/Jerusalem',
+  Timezone.asiaKathmandu: 'Asia/Kathmandu',
+  Timezone.asiaKolkata: 'Asia/Kolkata',
+  Timezone.asiaKuwait: 'Asia/Kuwait',
+  Timezone.asiaMuscat: 'Asia/Muscat',
+  Timezone.asiaQatar: 'Asia/Qatar',
+  Timezone.asiaRiyadh: 'Asia/Riyadh',
+  Timezone.asiaSeoul: 'Asia/Seoul',
+  Timezone.asiaShanghai: 'Asia/Shanghai',
+  Timezone.asiaSingapore: 'Asia/Singapore',
+  Timezone.asiaTaipei: 'Asia/Taipei',
+  Timezone.asiaTehran: 'Asia/Tehran',
+  Timezone.asiaTokyo: 'Asia/Tokyo',
+  Timezone.atlanticReykjavik: 'Atlantic/Reykjavik',
+  Timezone.australiaACT: 'Australia/ACT',
+  Timezone.australiaAdelaide: 'Australia/Adelaide',
+  Timezone.australiaBrisbane: 'Australia/Brisbane',
+  Timezone.australiaPerth: 'Australia/Perth',
+  Timezone.australiaSydney: 'Australia/Sydney',
+  Timezone.europeAmsterdam: 'Europe/Amsterdam',
+  Timezone.europeAthens: 'Europe/Athens',
+  Timezone.europeBelgrade: 'Europe/Belgrade',
+  Timezone.europeBerlin: 'Europe/Berlin',
+  Timezone.europeBrussels: 'Europe/Brussels',
+  Timezone.europeCopenhagen: 'Europe/Copenhagen',
+  Timezone.europeDublin: 'Europe/Dublin',
+  Timezone.europeHelsinki: 'Europe/Helsinki',
+  Timezone.europeIstanbul: 'Europe/Istanbul',
+  Timezone.europeLisbon: 'Europe/Lisbon',
+  Timezone.europeLondon: 'Europe/London',
+  Timezone.europeLuxembourg: 'Europe/Luxembourg',
+  Timezone.europeMadrid: 'Europe/Madrid',
+  Timezone.europeMalta: 'Europe/Malta',
+  Timezone.europeMoscow: 'Europe/Moscow',
+  Timezone.europeOslo: 'Europe/Oslo',
+  Timezone.europeParis: 'Europe/Paris',
+  Timezone.europeRiga: 'Europe/Riga',
+  Timezone.europeRome: 'Europe/Rome',
+  Timezone.europeStockholm: 'Europe/Stockholm',
+  Timezone.europeTallinn: 'Europe/Tallinn',
+  Timezone.europeVilnius: 'Europe/Vilnius',
+  Timezone.europeWarsaw: 'Europe/Warsaw',
+  Timezone.europeZurich: 'Europe/Zurich',
+  Timezone.pacificAuckland: 'Pacific/Auckland',
+  Timezone.pacificChatham: 'Pacific/Chatham',
+  Timezone.pacificFakaofo: 'Pacific/Fakaofo',
+  Timezone.pacificHonolulu: 'Pacific/Honolulu',
+  Timezone.pacificNorfolk: 'Pacific/Norfolk',
+  Timezone.usMountain: 'US/Mountain',
+  Timezone.exchange: 'exchange',
+};
+
+const _$SeriesFormatEnumMap = {
+  SeriesFormat.price: 'price',
+  SeriesFormat.volume: 'volume',
+};
 
 ChartingLibraryWidgetOptions _$ChartingLibraryWidgetOptionsFromJson(
     Map<String, dynamic> json) {
@@ -259,7 +388,7 @@ ChartingLibraryWidgetOptions _$ChartingLibraryWidgetOptionsFromJson(
     study_count_limit: json['study_count_limit'] as int?,
     symbol_search_request_delay: json['symbol_search_request_delay'] as int?,
     timeframe: json['timeframe'] as String?,
-    timezone: json['timezone'] as String?,
+    timezone: _$enumDecodeNullable(_$TimezoneEnumMap, json['timezone']),
     toolbar_bg: json['toolbar_bg'] as String?,
     width: json['width'] as int?,
     charts_storage_url: json['charts_storage_url'] as String?,
@@ -282,7 +411,7 @@ ChartingLibraryWidgetOptions _$ChartingLibraryWidgetOptionsFromJson(
         ? null
         : LoadingScreenOptions.fromJson(
             json['loading_screen'] as Map<String, dynamic>),
-    theme: json['theme'] as String?,
+    theme: _$enumDecodeNullable(_$ChartThemeEnumMap, json['theme']),
     compare_symbols: (json['compare_symbols'] as List<dynamic>?)
         ?.map((e) => CompareSymbol.fromJson(e as Map<String, dynamic>))
         .toList(),
@@ -319,7 +448,7 @@ Map<String, dynamic> _$ChartingLibraryWidgetOptionsToJson(
   writeNotNull(
       'symbol_search_request_delay', instance.symbol_search_request_delay);
   writeNotNull('timeframe', instance.timeframe);
-  writeNotNull('timezone', instance.timezone);
+  writeNotNull('timezone', _$TimezoneEnumMap[instance.timezone]);
   writeNotNull('toolbar_bg', instance.toolbar_bg);
   writeNotNull('width', instance.width);
   writeNotNull('charts_storage_url', instance.charts_storage_url);
@@ -336,10 +465,26 @@ Map<String, dynamic> _$ChartingLibraryWidgetOptionsToJson(
   writeNotNull('custom_css_url', instance.custom_css_url);
   writeNotNull('favorites', instance.favorites);
   writeNotNull('loading_screen', instance.loading_screen);
-  writeNotNull('theme', instance.theme);
+  writeNotNull('theme', _$ChartThemeEnumMap[instance.theme]);
   writeNotNull('compare_symbols', instance.compare_symbols);
   return val;
 }
+
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$ChartThemeEnumMap = {
+  ChartTheme.light: 'Light',
+  ChartTheme.dark: 'Dark',
+};
 
 SavedStateMetaInfo _$SavedStateMetaInfoFromJson(Map<String, dynamic> json) {
   return SavedStateMetaInfo(
@@ -446,7 +591,7 @@ Map<String, dynamic> _$NumericFormattingParamsToJson(
 
 AccessList _$AccessListFromJson(Map<String, dynamic> json) {
   return AccessList(
-    type: json['type'] as String,
+    type: _$enumDecode(_$AccessListTypeEnumMap, json['type']),
     tools: (json['tools'] as List<dynamic>)
         .map((e) => AccessListItem.fromJson(e as Map<String, dynamic>))
         .toList(),
@@ -455,9 +600,14 @@ AccessList _$AccessListFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$AccessListToJson(AccessList instance) =>
     <String, dynamic>{
-      'type': instance.type,
+      'type': _$AccessListTypeEnumMap[instance.type],
       'tools': instance.tools,
     };
+
+const _$AccessListTypeEnumMap = {
+  AccessListType.black: 'black',
+  AccessListType.white: 'white',
+};
 
 AccessListItem _$AccessListItemFromJson(Map<String, dynamic> json) {
   return AccessListItem(

@@ -38,13 +38,14 @@ const datafeed: TradingView.IBasicDataFeed = {
   resolveSymbol: (
     symbolName: string,
     onResolve: TradingView.ResolveCallback,
-    onError: TradingView.ErrorCallback
+    onError: TradingView.ErrorCallback,
+    extension: TradingView.SymbolResolveExtension
   ) => {
     window.flutter_inappwebview
       .callHandler("resolveSymbol", symbolName)
       .then((value) => {
         if (value !== null && typeof value === "object") {
-          onResolve(value);
+          onResolve(value as TradingView.LibrarySymbolInfo);
         } else if (typeof value === "string") {
           onError(value);
         } else {
@@ -58,21 +59,12 @@ const datafeed: TradingView.IBasicDataFeed = {
   getBars: (
     symbolInfo: TradingView.LibrarySymbolInfo,
     resolution: TradingView.ResolutionString,
-    rangeStartDate: number,
-    rangeEndDate: number,
+    periodParams: TradingView.PeriodParams,
     onResult: TradingView.HistoryCallback,
-    onError: TradingView.ErrorCallback,
-    isFirstCall: boolean
+    onError: TradingView.ErrorCallback
   ) => {
     window.flutter_inappwebview
-      .callHandler(
-        "getBars",
-        symbolInfo,
-        resolution,
-        rangeStartDate,
-        rangeEndDate,
-        isFirstCall
-      )
+      .callHandler("getBars", symbolInfo, resolution, periodParams)
       .then((value) => {
         if (value !== null && typeof value === "object") {
           onResult(value.bars, value.meta);
@@ -104,7 +96,7 @@ const datafeed: TradingView.IBasicDataFeed = {
   },
   unsubscribeBars: (listenerGuid: string) => {
     window.flutter_inappwebview.callHandler("unsubscribeBars", listenerGuid);
-  }
+  },
 };
 
 let chart: TradingView.IChartingLibraryWidget | undefined;
@@ -127,11 +119,12 @@ window.addEventListener("flutterInAppWebViewPlatformReady", (event) => {
   window.flutter_inappwebview
     .callHandler("start")
     .then((options: TradingView.ChartingLibraryWidgetOptions) => {
-      options.container_id = "tvchart";
+      options.container = "tvchart";
       options.library_path = "public/";
       options.datafeed = datafeed;
 
       if (chart == undefined) {
+        console.log(TradingView.version());
         chart = new TradingView.widget(options);
         chart.onChartReady(() => {
           chart.subscribe("onAutoSaveNeeded", () => {
