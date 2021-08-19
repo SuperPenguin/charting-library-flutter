@@ -7,8 +7,8 @@ Before starting, read prerequisite.
 # Prerequisite
 
 - Flutter 2.0 or newer
-- Access to charting-library
-- (IMPORTANT) Understanding on how to use charting-library on web context
+- Access to charting-library v19.x
+- (IMPORTANT) Knowledge on how to use charting-library on web
 
 # Step to build
 
@@ -35,7 +35,8 @@ For this example follow this method:
 
 ![flutter-assets](./docs/images/flutter-assets.png)
 
-4. Run flutter app on your devices.
+4. Add folder to your `pubspec.yaml` assets list, you need to specify all subfolder as well check example `pubspec.yaml`.
+5. Run flutter app on your devices.
 
 
 ## (Optional) Adding new types/class
@@ -64,32 +65,37 @@ The only limitation here is any properties with `function` values is not support
 
 **Q:** I don't have access to charting-library, help!
 
-**A:** Not my problem
+**A:** Not my problem.
 ##
 
-**Q:** charting-library files is missing here
+**Q:** charting-library files is missing here.
 
-**A:** It's not included, you need to add yours to this project
+**A:** It's not included, you need to add yours to this project.
 ##
 
 **Q:** Do you have any apk build to test/check?
 
-**A:** I will not provide any kind of build for this example
+**A:** I will not provide any kind of build for this example.
 ##
 
-**Q:** I want to ask question
+**Q:** I want to ask question.
 
-**A:** Open new issue
+**A:** Open new issue.
 ##
 
-**Q:** I have error in charting-library side, symbol not exist, bla bla bla
+**Q:** I have error in charting-library side, symbol not exist, etc.
 
 **A:** I won't answer any question that is not related to integration chart to flutter, if you don't know how to use charting-library ask on their discord/github, not here.
 ##
 
-**Q:** Does this work on iOS?
+**Q:** It doesn't work because this example use old version of lib.
 
-**A:** Yes
+**A:** Oh my bad, open new issue.
+##
+
+**Q:** Does this work on Android, iOS, and Web?
+
+**A:** Yes, Yes, No atm.
 ##
 
 **Q:** Does this work on other WebView packages?
