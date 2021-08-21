@@ -183,17 +183,17 @@ class SymbolData {
     return LibrarySymbolInfo(
       name: symbolString,
       ticker: code,
-      full_name: name,
+      fullName: name,
       description: description,
       type: type.jsValue,
       session: session.toString(),
       exchange: exchange.jsValue,
-      listed_exchange: listedExchange.jsValue,
+      listedExchange: listedExchange.jsValue,
       timezone: timezone,
       format: format,
       pricescale: pricescale,
       minmov: minmov,
-      supported_resolutions: List.from(resolutions),
+      supportedResolutions: List.from(resolutions),
     );
   }
 
@@ -201,7 +201,7 @@ class SymbolData {
     return SearchSymbolResultItem(
       symbol: symbolString,
       ticker: code,
-      full_name: name,
+      fullName: name,
       type: type.jsValue,
       description: description,
       exchange: exchange.jsValue,

@@ -1,4 +1,3 @@
-// ignore_for_file: non_constant_identifier_names
 import 'package:flutter/foundation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -283,8 +282,11 @@ enum DataStatus {
 @JsonSerializable(includeIfNull: false)
 class PeriodParams {
   final int from;
+
   final int to;
+
   final int countBack;
+
   final bool firstDataRequest;
 
   const PeriodParams({
@@ -296,6 +298,7 @@ class PeriodParams {
 
   factory PeriodParams.fromJson(Map<String, dynamic> json) =>
       _$PeriodParamsFromJson(json);
+
   Map<String, dynamic> toJson() => _$PeriodParamsToJson(this);
 }
 
@@ -303,10 +306,15 @@ class PeriodParams {
 @JsonSerializable(includeIfNull: false)
 class Bar {
   final int time;
+
   final double open;
+
   final double high;
+
   final double low;
+
   final double close;
+
   final int? volume;
 
   const Bar({
@@ -319,6 +327,7 @@ class Bar {
   });
 
   factory Bar.fromJson(Map<String, dynamic> json) => _$BarFromJson(json);
+
   Map<String, dynamic> toJson() => _$BarToJson(this);
 }
 
@@ -326,7 +335,9 @@ class Bar {
 @JsonSerializable(includeIfNull: false)
 class Exchange {
   final String value;
+
   final String name;
+
   final String desc;
 
   const Exchange({
@@ -337,6 +348,7 @@ class Exchange {
 
   factory Exchange.fromJson(Map<String, dynamic> json) =>
       _$ExchangeFromJson(json);
+
   Map<String, dynamic> toJson() => _$ExchangeToJson(this);
 }
 
@@ -344,25 +356,38 @@ class Exchange {
 @JsonSerializable(includeIfNull: false)
 class DatafeedConfiguration {
   final List<Exchange>? exchanges;
-  final List<String>? supported_resolutions;
-  final List<String>? currency_codes;
-  final bool? supports_marks;
-  final bool? supports_time;
-  final bool? supports_timescale_marks;
-  final List<DatafeedSymbolType>? symbols_types;
+
+  @JsonKey(name: 'supported_resolutions')
+  final List<String>? supportedResolutions;
+
+  @JsonKey(name: 'currency_codes')
+  final List<String>? currencyCodes;
+
+  @JsonKey(name: 'supports_marks')
+  final bool? supportsMarks;
+
+  @JsonKey(name: 'supports_time')
+  final bool? supportsTime;
+
+  @JsonKey(name: 'supports_timescale_marks')
+  final bool? supportsTimescaleMarks;
+
+  @JsonKey(name: 'symbols_types')
+  final List<DatafeedSymbolType>? symbolsTypes;
 
   const DatafeedConfiguration({
     this.exchanges,
-    this.supported_resolutions,
-    this.currency_codes,
-    this.supports_marks,
-    this.supports_time,
-    this.supports_timescale_marks,
-    this.symbols_types,
+    this.supportedResolutions,
+    this.currencyCodes,
+    this.supportsMarks,
+    this.supportsTime,
+    this.supportsTimescaleMarks,
+    this.symbolsTypes,
   });
 
   factory DatafeedConfiguration.fromJson(Map<String, dynamic> json) =>
       _$DatafeedConfigurationFromJson(json);
+
   Map<String, dynamic> toJson() => _$DatafeedConfigurationToJson(this);
 }
 
@@ -370,6 +395,7 @@ class DatafeedConfiguration {
 @JsonSerializable(includeIfNull: false)
 class DatafeedSymbolType {
   final String name;
+
   final String value;
 
   const DatafeedSymbolType({
@@ -379,6 +405,7 @@ class DatafeedSymbolType {
 
   factory DatafeedSymbolType.fromJson(Map<String, dynamic> json) =>
       _$DatafeedSymbolTypeFromJson(json);
+
   Map<String, dynamic> toJson() => _$DatafeedSymbolTypeToJson(this);
 }
 
@@ -386,15 +413,21 @@ class DatafeedSymbolType {
 @JsonSerializable(includeIfNull: false)
 class SearchSymbolResultItem {
   final String symbol;
-  final String full_name;
+
+  @JsonKey(name: 'full_name')
+  final String fullName;
+
   final String description;
+
   final String exchange;
+
   final String ticker;
+
   final String type;
 
   const SearchSymbolResultItem({
     required this.symbol,
-    required this.full_name,
+    required this.fullName,
     required this.description,
     required this.exchange,
     required this.ticker,
@@ -403,6 +436,7 @@ class SearchSymbolResultItem {
 
   factory SearchSymbolResultItem.fromJson(Map<String, dynamic> json) =>
       _$SearchSymbolResultItemFromJson(json);
+
   Map<String, dynamic> toJson() => _$SearchSymbolResultItemToJson(this);
 }
 
@@ -410,175 +444,288 @@ class SearchSymbolResultItem {
 @JsonSerializable(includeIfNull: false)
 class LibrarySymbolInfo {
   final String name;
-  final String full_name;
-  final List<String>? base_name;
+
+  @JsonKey(name: 'full_name')
+  final String fullName;
+
+  @JsonKey(name: 'base_name')
+  final List<String>? baseName;
+
   final String? ticker;
+
   final String description;
+
   final String type;
+
   final String session;
-  final String? session_display;
+
+  @JsonKey(name: 'session_display')
+  final String? sessionDisplay;
+
   final String? holidays;
+
   final String? corrections;
+
   final String exchange;
-  final String listed_exchange;
+
+  @JsonKey(name: 'listed_exchange')
+  final String listedExchange;
+
   final Timezone timezone;
+
   final SeriesFormat format;
+
   final double pricescale;
+
   final double minmov;
+
   final bool? fractional;
+
   final double? minmove2;
-  final bool? has_intraday;
-  final List<String> supported_resolutions;
-  final List<String>? intraday_multipliers;
-  final bool? has_seconds;
-  final bool? has_ticks;
-  final List<String>? seconds_multipliers;
-  final bool? has_daily;
-  final bool? has_weekly_and_monthly;
-  final bool? has_empty_bars;
-  final bool? has_no_volume;
-  final double? volume_precision;
-  final String? data_status;
+
+  @JsonKey(name: 'has_intraday')
+  final bool? hasIntraday;
+
+  @JsonKey(name: 'supported_resolutions')
+  final List<String> supportedResolutions;
+
+  @JsonKey(name: 'intraday_multipliers')
+  final List<String>? intradayMultipliers;
+
+  @JsonKey(name: 'has_seconds')
+  final bool? hasSeconds;
+
+  @JsonKey(name: 'has_ticks')
+  final bool? hasTicks;
+
+  @JsonKey(name: 'seconds_multipliers')
+  final List<String>? secondsMultipliers;
+
+  @JsonKey(name: 'has_daily')
+  final bool? hasDaily;
+
+  @JsonKey(name: 'has_weekly_and_monthly')
+  final bool? hasWeeklyAndMonthly;
+
+  @JsonKey(name: 'has_empty_bars')
+  final bool? hasEmptyBars;
+
+  @JsonKey(name: 'has_no_volume')
+  final bool? hasNoVolume;
+
+  @JsonKey(name: 'volume_precision')
+  final double? volumePrecision;
+
+  @JsonKey(name: 'data_status')
+  final String? dataStatus;
+
   final bool? expired;
-  final int? expiration_date;
+
+  @JsonKey(name: 'expiration_date')
+  final int? expirationDate;
+
   final String? sector;
+
   final String? industry;
-  final String? currency_code;
-  final String? original_currency_code;
+
+  @JsonKey(name: 'currency_code')
+  final String? currencyCode;
+
+  @JsonKey(name: 'original_currency_code')
+  final String? originalCurrencyCode;
 
   const LibrarySymbolInfo({
     required this.name,
-    required this.full_name,
-    this.base_name,
+    required this.fullName,
+    this.baseName,
     this.ticker,
     required this.description,
     required this.type,
     required this.session,
-    this.session_display,
+    this.sessionDisplay,
     this.holidays,
     this.corrections,
     required this.exchange,
-    required this.listed_exchange,
+    required this.listedExchange,
     required this.timezone,
     required this.format,
     required this.pricescale,
     required this.minmov,
     this.fractional,
     this.minmove2,
-    this.has_intraday,
-    required this.supported_resolutions,
-    this.intraday_multipliers,
-    this.has_seconds,
-    this.has_ticks,
-    this.seconds_multipliers,
-    this.has_daily,
-    this.has_weekly_and_monthly,
-    this.has_empty_bars,
-    this.has_no_volume,
-    this.volume_precision,
-    this.data_status,
+    this.hasIntraday,
+    required this.supportedResolutions,
+    this.intradayMultipliers,
+    this.hasSeconds,
+    this.hasTicks,
+    this.secondsMultipliers,
+    this.hasDaily,
+    this.hasWeeklyAndMonthly,
+    this.hasEmptyBars,
+    this.hasNoVolume,
+    this.volumePrecision,
+    this.dataStatus,
     this.expired,
-    this.expiration_date,
+    this.expirationDate,
     this.sector,
     this.industry,
-    this.currency_code,
-    this.original_currency_code,
+    this.currencyCode,
+    this.originalCurrencyCode,
   });
 
   factory LibrarySymbolInfo.fromJson(Map<String, dynamic> json) =>
       _$LibrarySymbolInfoFromJson(json);
+
   Map<String, dynamic> toJson() => _$LibrarySymbolInfoToJson(this);
 }
 
 /// Some property is not here and you should add it on JS side if needed:
 /// ```md
 /// required on JS side
-/// - container_id
+/// - container
 /// - datafeed
 /// ```
 @immutable
 @JsonSerializable(includeIfNull: false)
 class ChartingLibraryWidgetOptions {
   final String interval;
+
   final String? symbol;
-  final int? auto_save_delay;
+
+  @JsonKey(name: 'auto_save_delay')
+  final int? autoSaveDelay;
+
   final bool? autosize;
+
   final bool? debug;
-  final List<String>? disabled_features;
-  final AccessList? drawings_access;
-  final List<String>? enabled_features;
+
+  @JsonKey(name: 'disabled_features')
+  final List<String>? disabledFeatures;
+
+  @JsonKey(name: 'drawings_access')
+  final AccessList? drawingsAccess;
+
+  @JsonKey(name: 'enabled_features')
+  final List<String>? enabledFeatures;
+
   final bool? fullscreen;
+
   final int? height;
+
   final String locale;
-  final NumericFormattingParams? numeric_formatting;
-  final Map<String, dynamic>? saved_data;
-  final SavedStateMetaInfo? saved_data_meta_info;
-  final AccessList? studies_access;
-  final int? study_count_limit;
-  final int? symbol_search_request_delay;
+
+  @JsonKey(name: 'numeric_formatting')
+  final NumericFormattingParams? numericFormatting;
+
+  @JsonKey(name: 'saved_data')
+  final Map<String, dynamic>? savedData;
+
+  @JsonKey(name: 'saved_data_meta_info')
+  final SavedStateMetaInfo? savedDataMetaInfo;
+
+  @JsonKey(name: 'studies_access')
+  final AccessList? studiesAccess;
+
+  @JsonKey(name: 'study_count_limit')
+  final int? studyCountLimit;
+
+  @JsonKey(name: 'symbol_search_request_delay')
+  final int? symbolSearchRequestDelay;
+
   final String? timeframe;
+
   final Timezone? timezone;
-  final String? toolbar_bg;
+
+  @JsonKey(name: 'toolbar_bg')
+  final String? toolbarBg;
+
   final int? width;
-  final String? charts_storage_url;
-  final String? charts_storage_api_version;
-  final String? client_id;
-  final String? user_id;
-  final bool? load_last_chart;
+
+  @JsonKey(name: 'charts_storage_url')
+  final String? chartsStorageUrl;
+
+  @JsonKey(name: 'charts_storage_api_version')
+  final String? chartsStorageApiVersion;
+
+  @JsonKey(name: 'client_id')
+  final String? clientId;
+
+  @JsonKey(name: 'user_id')
+  final String? userId;
+
+  @JsonKey(name: 'load_last_chart')
+  final bool? loadLastChart;
+
   // TODO: Use custom class that handle Map<String, String | num | bool>
-  final Map<String, dynamic>? studies_overrides;
+  @JsonKey(name: 'studies_overrides')
+  final Map<String, dynamic>? studiesOverrides;
+
   // TODO: Use custom class that handle Map<String, String | num | bool>
   final Map<String, dynamic>? overrides;
-  final String? snapshot_url;
+
+  @JsonKey(name: 'snapshot_url')
+  final String? snapshotUrl;
+
   final String? preset;
-  final TimeFrameItem? time_frames;
-  final String? custom_css_url;
+
+  @JsonKey(name: 'time_frames')
+  final TimeFrameItem? timeFrames;
+
+  @JsonKey(name: 'custom_css_url')
+  final String? customCssUrl;
+
   final Favorites? favorites;
-  final LoadingScreenOptions? loading_screen;
+
+  @JsonKey(name: 'loading_screen')
+  final LoadingScreenOptions? loadingScreen;
+
   final ChartTheme? theme;
-  final List<CompareSymbol>? compare_symbols;
+
+  @JsonKey(name: 'compare_symbols')
+  final List<CompareSymbol>? compareSymbols;
 
   const ChartingLibraryWidgetOptions({
     required this.interval,
     this.symbol,
-    this.auto_save_delay,
+    this.autoSaveDelay,
     this.autosize,
     this.debug,
-    this.disabled_features,
-    this.drawings_access,
-    this.enabled_features,
+    this.disabledFeatures,
+    this.drawingsAccess,
+    this.enabledFeatures,
     this.fullscreen,
     this.height,
     required this.locale,
-    this.numeric_formatting,
-    this.saved_data,
-    this.saved_data_meta_info,
-    this.studies_access,
-    this.study_count_limit,
-    this.symbol_search_request_delay,
+    this.numericFormatting,
+    this.savedData,
+    this.savedDataMetaInfo,
+    this.studiesAccess,
+    this.studyCountLimit,
+    this.symbolSearchRequestDelay,
     this.timeframe,
     this.timezone,
-    this.toolbar_bg,
+    this.toolbarBg,
     this.width,
-    this.charts_storage_url,
-    this.charts_storage_api_version,
-    this.client_id,
-    this.user_id,
-    this.load_last_chart,
-    this.studies_overrides,
+    this.chartsStorageUrl,
+    this.chartsStorageApiVersion,
+    this.clientId,
+    this.userId,
+    this.loadLastChart,
+    this.studiesOverrides,
     this.overrides,
-    this.snapshot_url,
+    this.snapshotUrl,
     this.preset,
-    this.time_frames,
-    this.custom_css_url,
+    this.timeFrames,
+    this.customCssUrl,
     this.favorites,
-    this.loading_screen,
+    this.loadingScreen,
     this.theme,
-    this.compare_symbols,
+    this.compareSymbols,
   });
 
   factory ChartingLibraryWidgetOptions.fromJson(Map<String, dynamic> json) =>
       _$ChartingLibraryWidgetOptionsFromJson(json);
+
   Map<String, dynamic> toJson() => _$ChartingLibraryWidgetOptionsToJson(this);
 }
 
@@ -597,6 +744,7 @@ class SavedStateMetaInfo {
 
   factory SavedStateMetaInfo.fromJson(Map<String, dynamic> json) =>
       _$SavedStateMetaInfoFromJson(json);
+
   Map<String, dynamic> toJson() => _$SavedStateMetaInfoToJson(this);
 }
 
@@ -613,6 +761,7 @@ class CompareSymbol {
 
   factory CompareSymbol.fromJson(Map<String, dynamic> json) =>
       _$CompareSymbolFromJson(json);
+
   Map<String, dynamic> toJson() => _$CompareSymbolToJson(this);
 }
 
@@ -629,6 +778,7 @@ class LoadingScreenOptions {
 
   factory LoadingScreenOptions.fromJson(Map<String, dynamic> json) =>
       _$LoadingScreenOptionsFromJson(json);
+
   Map<String, dynamic> toJson() => _$LoadingScreenOptionsToJson(this);
 }
 
@@ -645,6 +795,7 @@ class Favorites {
 
   factory Favorites.fromJson(Map<String, dynamic> json) =>
       _$FavoritesFromJson(json);
+
   Map<String, dynamic> toJson() => _$FavoritesToJson(this);
 }
 
@@ -665,20 +816,23 @@ class TimeFrameItem {
 
   factory TimeFrameItem.fromJson(Map<String, dynamic> json) =>
       _$TimeFrameItemFromJson(json);
+
   Map<String, dynamic> toJson() => _$TimeFrameItemToJson(this);
 }
 
 @immutable
 @JsonSerializable(includeIfNull: false)
 class NumericFormattingParams {
-  final String decimal_sign;
+  @JsonKey(name: 'decimal_sign')
+  final String decimalSign;
 
   const NumericFormattingParams({
-    required this.decimal_sign,
+    required this.decimalSign,
   });
 
   factory NumericFormattingParams.fromJson(Map<String, dynamic> json) =>
       _$NumericFormattingParamsFromJson(json);
+
   Map<String, dynamic> toJson() => _$NumericFormattingParamsToJson(this);
 }
 
@@ -695,6 +849,7 @@ class AccessList {
 
   factory AccessList.fromJson(Map<String, dynamic> json) =>
       _$AccessListFromJson(json);
+
   Map<String, dynamic> toJson() => _$AccessListToJson(this);
 }
 
@@ -711,5 +866,6 @@ class AccessListItem {
 
   factory AccessListItem.fromJson(Map<String, dynamic> json) =>
       _$AccessListItemFromJson(json);
+
   Map<String, dynamic> toJson() => _$AccessListItemToJson(this);
 }
