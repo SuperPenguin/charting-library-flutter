@@ -7,8 +7,11 @@ declare global {
     };
     toggleDarkTheme: () => void;
     toggleLightTheme: () => void;
+    callOnTick: (payload: string) => void;
   }
 }
+
+const onTickMap: Map<String, TradingView.SubscribeBarsCallback> = new Map();
 
 const datafeed: TradingView.IBasicDataFeed = {
   onReady: (callback: TradingView.OnReadyCallback) => {
@@ -85,18 +88,20 @@ const datafeed: TradingView.IBasicDataFeed = {
     listenerGuid: string,
     onResetCacheNeededCallback: () => void
   ) => {
-    window.flutter_inappwebview
-      .callHandler("subscribeBars", symbolInfo, resolution, listenerGuid)
-      .then((value) => {
-        if (value !== null && typeof value === "object") {
-          onTick(value);
-        }
-      })
-      .catch((reason) => {});
+    onTickMap.set(listenerGuid, onTick);
+
+    window.flutter_inappwebview.callHandler(
+      "subscribeBars",
+      symbolInfo,
+      resolution,
+      listenerGuid
+    );
   },
   unsubscribeBars: (listenerGuid: string) => {
+    onTickMap.delete(listenerGuid);
+
     window.flutter_inappwebview.callHandler("unsubscribeBars", listenerGuid);
-  },
+  }
 };
 
 let chart: TradingView.IChartingLibraryWidget | undefined;
@@ -114,6 +119,20 @@ function toggleDarkTheme() {
   }
 }
 window.toggleDarkTheme = toggleDarkTheme;
+
+function callOnTick(payload: string) {
+  const payloadObject: Record<string, any> = JSON.parse(payload);
+  const listenerGuid: string | undefined = payloadObject["listenerGuid"];
+  const bar: TradingView.Bar | undefined = payloadObject["bar"];
+
+  if (listenerGuid == undefined || bar == undefined) return;
+
+  if (onTickMap.has(listenerGuid)) {
+    const onTick = onTickMap.get(listenerGuid);
+    onTick(bar);
+  }
+}
+window.callOnTick = callOnTick;
 
 window.addEventListener("flutterInAppWebViewPlatformReady", (event) => {
   window.flutter_inappwebview

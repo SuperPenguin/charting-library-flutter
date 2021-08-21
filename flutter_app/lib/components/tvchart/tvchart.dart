@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:chart/commons/localhost.dart';
 import 'package:chart/commons/tzdt.dart';
 import 'package:chart/components/tvchart/tvchart_types.dart';
@@ -23,13 +25,29 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
   bool _isError = false;
   String _isErrorMessage = '';
   bool _showBack = false;
+  final Map<String, _OnTickInfo> _onTickMap = {};
 
   bool get _chartLoaded {
     return _controller != null && !_isLoading && !_isError;
   }
 
+  // ignore: unused_element
+  void _callOnTick(String listenerGuid, Bar bar) {
+    if (_chartLoaded) {
+      final controller = _controller!;
+      final Map<String, dynamic> payload = {
+        'listenerGuid': listenerGuid,
+        'bar': bar,
+      };
+
+      controller.evaluateJavascript(
+        source: 'window.callOnTick(`${jsonEncode(payload)}`);',
+      );
+    }
+  }
+
   void _attachHandler() {
-    var controller = _controller;
+    final controller = _controller;
     if (controller == null) return;
 
     controller.addJavaScriptHandler(
@@ -43,12 +61,12 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
           interval: '1D',
           timezone: Timezone.asiaJakarta,
           autosize: true,
-          auto_save_delay: 1,
+          autoSaveDelay: 1,
           theme: Theme.of(context).brightness == Brightness.light
               ? ChartTheme.light
               : ChartTheme.dark,
-          saved_data: _savedData,
-          disabled_features: const [
+          savedData: _savedData,
+          disabledFeatures: const [
             'header_fullscreen_button',
             'header_screenshot',
             'use_localstorage_for_settings',
@@ -56,7 +74,7 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
             'go_to_date',
             'timeframes_toolbar',
           ],
-          enabled_features: const ['hide_left_toolbar_by_default'],
+          enabledFeatures: const ['hide_left_toolbar_by_default'],
         );
       },
     );
@@ -72,12 +90,12 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
             //   desc: 'Indonesia Stock Exchange',
             // ),
           ],
-          supported_resolutions: ['1D'],
-          currency_codes: ['IDR'],
-          supports_marks: false,
-          supports_time: true,
-          supports_timescale_marks: true,
-          symbols_types: [
+          supportedResolutions: ['1D'],
+          currencyCodes: ['IDR'],
+          supportsMarks: false,
+          supportsTime: true,
+          supportsTimescaleMarks: true,
+          symbolsTypes: [
             DatafeedSymbolType(
               name: 'Index',
               value: 'index',
@@ -94,12 +112,13 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
     controller.addJavaScriptHandler(
       handlerName: 'searchSymbols',
       callback: (arguments) {
-        String userInput = arguments[0];
+        final String userInput = arguments[0];
         // Only 1 exchange on example, not needed
-        // String exchange = arguments[1];
-        String symbolType = arguments[2];
+        // final String exchange = arguments[1];
+        final String symbolType = arguments[2];
 
-        final result = historical.searchSymbol(userInput, symbolType);
+        final List<SearchSymbolResultItem> result =
+            historical.searchSymbol(userInput, symbolType);
         return result;
       },
     );
@@ -107,8 +126,8 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
     controller.addJavaScriptHandler(
       handlerName: 'resolveSymbol',
       callback: (arguments) {
-        String symbolName = arguments[0];
-        var result = historical.getSymbol(symbolName);
+        final String symbolName = arguments[0];
+        final SymbolData? result = historical.getSymbol(symbolName);
 
         if (result != null) {
           return result.getLibrarySymbolInfo();
@@ -121,10 +140,11 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
     controller.addJavaScriptHandler(
       handlerName: 'getBars',
       callback: (arguments) async {
-        LibrarySymbolInfo symbolInfo = LibrarySymbolInfo.fromJson(arguments[0]);
+        final LibrarySymbolInfo symbolInfo =
+            LibrarySymbolInfo.fromJson(arguments[0]);
         // Only 1 resolution on example, not needed
-        // String resolution = arguments[1];
-        PeriodParams periodParams = PeriodParams.fromJson(arguments[2]);
+        // final String resolution = arguments[1];
+        final PeriodParams periodParams = PeriodParams.fromJson(arguments[2]);
 
         var symbol = historical.getSymbol(symbolInfo.name);
         if (symbol == null) {
@@ -159,16 +179,34 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
     controller.addJavaScriptHandler(
       handlerName: 'subscribeBars',
       callback: (arguments) {
-        // LibrarySymbolInfo symbolInfo = LibrarySymbolInfo.fromJson(arguments[0]);
-        // String resolution = arguments[1];
-        // String listenerGuid = arguments[2];
+        final LibrarySymbolInfo symbolInfo =
+            LibrarySymbolInfo.fromJson(arguments[0]);
+        final String resolution = arguments[1];
+        final String listenerGuid = arguments[2];
+
+        if (_onTickMap.containsKey(listenerGuid)) {
+          // Dispose existing onTick with same ID
+        }
+
+        _onTickMap[listenerGuid] = _OnTickInfo(
+          symbolInfo: symbolInfo,
+          resolution: resolution,
+        );
+
+        // Do request for realtime data
+        // Use _callOnTick for returning realtime bar data
       },
     );
 
     controller.addJavaScriptHandler(
       handlerName: 'unsubscribeBars',
       callback: (arguments) {
-        // String listenerGuid = arguments[0];
+        final String listenerGuid = arguments[0];
+
+        if (_onTickMap.containsKey(listenerGuid)) {
+          // Dispose existing onTick
+        }
+        _onTickMap.remove(listenerGuid);
       },
     );
 
@@ -207,6 +245,10 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
   @override
   void dispose() {
     _controller = null;
+    _onTickMap.forEach((key, value) {
+      // Dispose all onTick request/stream
+    });
+
     WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
@@ -360,3 +402,14 @@ class _TVChartState extends State<TVChart> with WidgetsBindingObserver {
 }
 
 Map<String, dynamic>? _savedData;
+
+@immutable
+class _OnTickInfo {
+  final LibrarySymbolInfo symbolInfo;
+  final String resolution;
+
+  const _OnTickInfo({
+    required this.symbolInfo,
+    required this.resolution,
+  });
+}
