@@ -1,37 +1,37 @@
 # Flutter Charting Library Example
 
-This is an example on how to add charting-library to your flutter application with JS api.
+This is an example on how to add charting_library to your flutter application with JS api.
 The repo contains 2 projects, flutter project and js project.
 Before starting, read prerequisite.
 
 # Prerequisite
 
 - Flutter 2.0 or newer
-- Access to charting-library v19.x
-- (IMPORTANT) Knowledge on how to use charting-library on web
+- Access to charting_library v19.x (or newer)
+- (IMPORTANT) Knowledge on how to use charting_library on web
 
 # Step to build
 
-## Bundling charting-library
+## Bundling charting_library
 
-First you need to bundle charting-library as a single page web.
+First you need to bundle charting_library as a single page web.
 You can use your own bundler/way. But if you need quick you can use method this example use:
 
-1. Grab these files and put it on `src/charting-library`
+1. Grab these files and put it on `src/charting_library`
 
 ![chart-src](./docs/images/chart-src.png)
 
 2. Run build script `npm run build`
 3. Bundled files should be in dist folder
 
-## Add charting-library to flutter
+## Add charting_library to flutter
 
 This example is using `flutter_inappwebview` for WebView and localhost, to serve webpage directly from assets folder. You can use other WebView packages/serve via server, if you wish.
 For this example follow this method:
 
 1. Grab the dist files from step before
 2. Create folder `assets/tvchart`, and paste those files.
-3. Create folder `assets/tvchart/public`, and paste all files charting-library needed (the one needed from library_path). This is assets folder should like right now.
+3. Create folder `assets/tvchart/public`, and paste all files charting_library needed (the one needed from library_path). This is assets folder should like right now.
 
 ![flutter-assets](./docs/images/flutter-assets.png)
 
@@ -41,7 +41,7 @@ For this example follow this method:
 
 ## (Optional) Adding new types/class
 
-If you needed types/class that doesn't exist yet on `tvchart_types.dart` you can check the typedef (.d.ts files) on charting-library and try to add an equivalent class to `tvchart_types.dart`, and then add `toJson` and `fromJson` function (see other class as example).
+If you needed types/class that doesn't exist yet on `tvchart_types.dart` you can check the typedef (.d.ts files) on charting_library and try to add an equivalent class to `tvchart_types.dart`, and then add `toJson` and `fromJson` function (see other class as example).
 After that run build_runner to generate new/updated `JsonSerializable` annotated class. You can run it using vscode tasks `Run build_runner` or with terminal command
 ```
 flutter pub run build_runner build --delete-conflicting-outputs
@@ -63,12 +63,12 @@ The only limitation here is any properties with `function` values is not support
 
 # FAQ
 
-**Q:** I don't have access to charting-library, help!
+**Q:** I don't have access to charting_library, help!
 
 **A:** Not my problem.
 ##
 
-**Q:** charting-library files is missing here.
+**Q:** charting_library files is missing here.
 
 **A:** It's not included, you need to add yours to this project.
 ##
@@ -83,14 +83,14 @@ The only limitation here is any properties with `function` values is not support
 **A:** Open new issue.
 ##
 
-**Q:** I have error in charting-library side, symbol not exist, etc.
+**Q:** I have error in charting_library side, symbol not exist, etc.
 
-**A:** I won't answer any question that is not related to integration chart to flutter, if you don't know how to use charting-library ask on their discord/github, not here.
+**A:** I won't answer any question that is not related to integration chart to flutter, if you don't know how to use charting_library ask on their discord/github, not here.
 ##
 
-**Q:** It doesn't work because this example use old version of lib.
+**Q:** It doesn't work because this example use old version of charting_library.
 
-**A:** Oh my bad, open new issue.
+**A:** Open new issue. I'll try to update the example with latest available lib version.
 ##
 
 **Q:** Does this work on Android, iOS, and Web?
@@ -110,7 +110,7 @@ The only limitation here is any properties with `function` values is not support
 
 **Q:** There are some types/class I needed that not exist on `tvchart_types.dart` yet. How do I add them?
 
-**A:** You can check the charting-library typedef, and add stuff you needed. Check `(Optional) Adding new types/class`.
+**A:** You can check the charting_library typedef, and add stuff you needed. Check `(Optional) Adding new types/class`.
 ##
 
 **Q:** How do I add properties with `function` value?
