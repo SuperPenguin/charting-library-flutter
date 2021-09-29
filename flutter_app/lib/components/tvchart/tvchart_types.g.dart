@@ -6,14 +6,12 @@ part of 'tvchart_types.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PeriodParams _$PeriodParamsFromJson(Map<String, dynamic> json) {
-  return PeriodParams(
-    from: json['from'] as int,
-    to: json['to'] as int,
-    countBack: json['countBack'] as int,
-    firstDataRequest: json['firstDataRequest'] as bool,
-  );
-}
+PeriodParams _$PeriodParamsFromJson(Map<String, dynamic> json) => PeriodParams(
+      from: json['from'] as int,
+      to: json['to'] as int,
+      countBack: json['countBack'] as int,
+      firstDataRequest: json['firstDataRequest'] as bool,
+    );
 
 Map<String, dynamic> _$PeriodParamsToJson(PeriodParams instance) =>
     <String, dynamic>{
@@ -23,16 +21,14 @@ Map<String, dynamic> _$PeriodParamsToJson(PeriodParams instance) =>
       'firstDataRequest': instance.firstDataRequest,
     };
 
-Bar _$BarFromJson(Map<String, dynamic> json) {
-  return Bar(
-    time: json['time'] as int,
-    open: (json['open'] as num).toDouble(),
-    high: (json['high'] as num).toDouble(),
-    low: (json['low'] as num).toDouble(),
-    close: (json['close'] as num).toDouble(),
-    volume: json['volume'] as int?,
-  );
-}
+Bar _$BarFromJson(Map<String, dynamic> json) => Bar(
+      time: json['time'] as int,
+      open: (json['open'] as num).toDouble(),
+      high: (json['high'] as num).toDouble(),
+      low: (json['low'] as num).toDouble(),
+      close: (json['close'] as num).toDouble(),
+      volume: json['volume'] as int?,
+    );
 
 Map<String, dynamic> _$BarToJson(Bar instance) {
   final val = <String, dynamic>{
@@ -53,13 +49,11 @@ Map<String, dynamic> _$BarToJson(Bar instance) {
   return val;
 }
 
-Exchange _$ExchangeFromJson(Map<String, dynamic> json) {
-  return Exchange(
-    value: json['value'] as String,
-    name: json['name'] as String,
-    desc: json['desc'] as String,
-  );
-}
+Exchange _$ExchangeFromJson(Map<String, dynamic> json) => Exchange(
+      value: json['value'] as String,
+      name: json['name'] as String,
+      desc: json['desc'] as String,
+    );
 
 Map<String, dynamic> _$ExchangeToJson(Exchange instance) => <String, dynamic>{
       'value': instance.value,
@@ -68,25 +62,24 @@ Map<String, dynamic> _$ExchangeToJson(Exchange instance) => <String, dynamic>{
     };
 
 DatafeedConfiguration _$DatafeedConfigurationFromJson(
-    Map<String, dynamic> json) {
-  return DatafeedConfiguration(
-    exchanges: (json['exchanges'] as List<dynamic>?)
-        ?.map((e) => Exchange.fromJson(e as Map<String, dynamic>))
-        .toList(),
-    supportedResolutions: (json['supported_resolutions'] as List<dynamic>?)
-        ?.map((e) => e as String)
-        .toList(),
-    currencyCodes: (json['currency_codes'] as List<dynamic>?)
-        ?.map((e) => e as String)
-        .toList(),
-    supportsMarks: json['supports_marks'] as bool?,
-    supportsTime: json['supports_time'] as bool?,
-    supportsTimescaleMarks: json['supports_timescale_marks'] as bool?,
-    symbolsTypes: (json['symbols_types'] as List<dynamic>?)
-        ?.map((e) => DatafeedSymbolType.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+        Map<String, dynamic> json) =>
+    DatafeedConfiguration(
+      exchanges: (json['exchanges'] as List<dynamic>?)
+          ?.map((e) => Exchange.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      supportedResolutions: (json['supported_resolutions'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      currencyCodes: (json['currency_codes'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      supportsMarks: json['supports_marks'] as bool?,
+      supportsTime: json['supports_time'] as bool?,
+      supportsTimescaleMarks: json['supports_timescale_marks'] as bool?,
+      symbolsTypes: (json['symbols_types'] as List<dynamic>?)
+          ?.map((e) => DatafeedSymbolType.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$DatafeedConfigurationToJson(
     DatafeedConfiguration instance) {
@@ -108,12 +101,11 @@ Map<String, dynamic> _$DatafeedConfigurationToJson(
   return val;
 }
 
-DatafeedSymbolType _$DatafeedSymbolTypeFromJson(Map<String, dynamic> json) {
-  return DatafeedSymbolType(
-    name: json['name'] as String,
-    value: json['value'] as String,
-  );
-}
+DatafeedSymbolType _$DatafeedSymbolTypeFromJson(Map<String, dynamic> json) =>
+    DatafeedSymbolType(
+      name: json['name'] as String,
+      value: json['value'] as String,
+    );
 
 Map<String, dynamic> _$DatafeedSymbolTypeToJson(DatafeedSymbolType instance) =>
     <String, dynamic>{
@@ -122,16 +114,15 @@ Map<String, dynamic> _$DatafeedSymbolTypeToJson(DatafeedSymbolType instance) =>
     };
 
 SearchSymbolResultItem _$SearchSymbolResultItemFromJson(
-    Map<String, dynamic> json) {
-  return SearchSymbolResultItem(
-    symbol: json['symbol'] as String,
-    fullName: json['full_name'] as String,
-    description: json['description'] as String,
-    exchange: json['exchange'] as String,
-    ticker: json['ticker'] as String,
-    type: json['type'] as String,
-  );
-}
+        Map<String, dynamic> json) =>
+    SearchSymbolResultItem(
+      symbol: json['symbol'] as String,
+      fullName: json['full_name'] as String,
+      description: json['description'] as String,
+      exchange: json['exchange'] as String,
+      ticker: json['ticker'] as String,
+      type: json['type'] as String,
+    );
 
 Map<String, dynamic> _$SearchSymbolResultItemToJson(
         SearchSymbolResultItem instance) =>
@@ -144,53 +135,53 @@ Map<String, dynamic> _$SearchSymbolResultItemToJson(
       'type': instance.type,
     };
 
-LibrarySymbolInfo _$LibrarySymbolInfoFromJson(Map<String, dynamic> json) {
-  return LibrarySymbolInfo(
-    name: json['name'] as String,
-    fullName: json['full_name'] as String,
-    baseName:
-        (json['base_name'] as List<dynamic>?)?.map((e) => e as String).toList(),
-    ticker: json['ticker'] as String?,
-    description: json['description'] as String,
-    type: json['type'] as String,
-    session: json['session'] as String,
-    sessionDisplay: json['session_display'] as String?,
-    holidays: json['holidays'] as String?,
-    corrections: json['corrections'] as String?,
-    exchange: json['exchange'] as String,
-    listedExchange: json['listed_exchange'] as String,
-    timezone: _$enumDecode(_$TimezoneEnumMap, json['timezone']),
-    format: _$enumDecode(_$SeriesFormatEnumMap, json['format']),
-    pricescale: (json['pricescale'] as num).toDouble(),
-    minmov: (json['minmov'] as num).toDouble(),
-    fractional: json['fractional'] as bool?,
-    minmove2: (json['minmove2'] as num?)?.toDouble(),
-    hasIntraday: json['has_intraday'] as bool?,
-    supportedResolutions: (json['supported_resolutions'] as List<dynamic>)
-        .map((e) => e as String)
-        .toList(),
-    intradayMultipliers: (json['intraday_multipliers'] as List<dynamic>?)
-        ?.map((e) => e as String)
-        .toList(),
-    hasSeconds: json['has_seconds'] as bool?,
-    hasTicks: json['has_ticks'] as bool?,
-    secondsMultipliers: (json['seconds_multipliers'] as List<dynamic>?)
-        ?.map((e) => e as String)
-        .toList(),
-    hasDaily: json['has_daily'] as bool?,
-    hasWeeklyAndMonthly: json['has_weekly_and_monthly'] as bool?,
-    hasEmptyBars: json['has_empty_bars'] as bool?,
-    hasNoVolume: json['has_no_volume'] as bool?,
-    volumePrecision: (json['volume_precision'] as num?)?.toDouble(),
-    dataStatus: json['data_status'] as String?,
-    expired: json['expired'] as bool?,
-    expirationDate: json['expiration_date'] as int?,
-    sector: json['sector'] as String?,
-    industry: json['industry'] as String?,
-    currencyCode: json['currency_code'] as String?,
-    originalCurrencyCode: json['original_currency_code'] as String?,
-  );
-}
+LibrarySymbolInfo _$LibrarySymbolInfoFromJson(Map<String, dynamic> json) =>
+    LibrarySymbolInfo(
+      name: json['name'] as String,
+      fullName: json['full_name'] as String,
+      baseName: (json['base_name'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      ticker: json['ticker'] as String?,
+      description: json['description'] as String,
+      type: json['type'] as String,
+      session: json['session'] as String,
+      sessionDisplay: json['session_display'] as String?,
+      holidays: json['holidays'] as String?,
+      corrections: json['corrections'] as String?,
+      exchange: json['exchange'] as String,
+      listedExchange: json['listed_exchange'] as String,
+      timezone: _$enumDecode(_$TimezoneEnumMap, json['timezone']),
+      format: _$enumDecode(_$SeriesFormatEnumMap, json['format']),
+      pricescale: (json['pricescale'] as num).toDouble(),
+      minmov: (json['minmov'] as num).toDouble(),
+      fractional: json['fractional'] as bool?,
+      minmove2: (json['minmove2'] as num?)?.toDouble(),
+      hasIntraday: json['has_intraday'] as bool?,
+      supportedResolutions: (json['supported_resolutions'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      intradayMultipliers: (json['intraday_multipliers'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      hasSeconds: json['has_seconds'] as bool?,
+      hasTicks: json['has_ticks'] as bool?,
+      secondsMultipliers: (json['seconds_multipliers'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      hasDaily: json['has_daily'] as bool?,
+      hasWeeklyAndMonthly: json['has_weekly_and_monthly'] as bool?,
+      hasEmptyBars: json['has_empty_bars'] as bool?,
+      hasNoVolume: json['has_no_volume'] as bool?,
+      volumePrecision: (json['volume_precision'] as num?)?.toDouble(),
+      dataStatus: json['data_status'] as String?,
+      expired: json['expired'] as bool?,
+      expirationDate: json['expiration_date'] as int?,
+      sector: json['sector'] as String?,
+      industry: json['industry'] as String?,
+      currencyCode: json['currency_code'] as String?,
+      originalCurrencyCode: json['original_currency_code'] as String?,
+    );
 
 Map<String, dynamic> _$LibrarySymbolInfoToJson(LibrarySymbolInfo instance) {
   final val = <String, dynamic>{
@@ -354,69 +345,69 @@ const _$SeriesFormatEnumMap = {
 };
 
 ChartingLibraryWidgetOptions _$ChartingLibraryWidgetOptionsFromJson(
-    Map<String, dynamic> json) {
-  return ChartingLibraryWidgetOptions(
-    interval: json['interval'] as String,
-    symbol: json['symbol'] as String?,
-    autoSaveDelay: json['auto_save_delay'] as int?,
-    autosize: json['autosize'] as bool?,
-    debug: json['debug'] as bool?,
-    disabledFeatures: (json['disabled_features'] as List<dynamic>?)
-        ?.map((e) => e as String)
-        .toList(),
-    drawingsAccess: json['drawings_access'] == null
-        ? null
-        : AccessList.fromJson(json['drawings_access'] as Map<String, dynamic>),
-    enabledFeatures: (json['enabled_features'] as List<dynamic>?)
-        ?.map((e) => e as String)
-        .toList(),
-    fullscreen: json['fullscreen'] as bool?,
-    height: json['height'] as int?,
-    locale: json['locale'] as String,
-    numericFormatting: json['numeric_formatting'] == null
-        ? null
-        : NumericFormattingParams.fromJson(
-            json['numeric_formatting'] as Map<String, dynamic>),
-    savedData: json['saved_data'] as Map<String, dynamic>?,
-    savedDataMetaInfo: json['saved_data_meta_info'] == null
-        ? null
-        : SavedStateMetaInfo.fromJson(
-            json['saved_data_meta_info'] as Map<String, dynamic>),
-    studiesAccess: json['studies_access'] == null
-        ? null
-        : AccessList.fromJson(json['studies_access'] as Map<String, dynamic>),
-    studyCountLimit: json['study_count_limit'] as int?,
-    symbolSearchRequestDelay: json['symbol_search_request_delay'] as int?,
-    timeframe: json['timeframe'] as String?,
-    timezone: _$enumDecodeNullable(_$TimezoneEnumMap, json['timezone']),
-    toolbarBg: json['toolbar_bg'] as String?,
-    width: json['width'] as int?,
-    chartsStorageUrl: json['charts_storage_url'] as String?,
-    chartsStorageApiVersion: json['charts_storage_api_version'] as String?,
-    clientId: json['client_id'] as String?,
-    userId: json['user_id'] as String?,
-    loadLastChart: json['load_last_chart'] as bool?,
-    studiesOverrides: json['studies_overrides'] as Map<String, dynamic>?,
-    overrides: json['overrides'] as Map<String, dynamic>?,
-    snapshotUrl: json['snapshot_url'] as String?,
-    preset: json['preset'] as String?,
-    timeFrames: json['time_frames'] == null
-        ? null
-        : TimeFrameItem.fromJson(json['time_frames'] as Map<String, dynamic>),
-    customCssUrl: json['custom_css_url'] as String?,
-    favorites: json['favorites'] == null
-        ? null
-        : Favorites.fromJson(json['favorites'] as Map<String, dynamic>),
-    loadingScreen: json['loading_screen'] == null
-        ? null
-        : LoadingScreenOptions.fromJson(
-            json['loading_screen'] as Map<String, dynamic>),
-    theme: _$enumDecodeNullable(_$ChartThemeEnumMap, json['theme']),
-    compareSymbols: (json['compare_symbols'] as List<dynamic>?)
-        ?.map((e) => CompareSymbol.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+        Map<String, dynamic> json) =>
+    ChartingLibraryWidgetOptions(
+      interval: json['interval'] as String,
+      symbol: json['symbol'] as String?,
+      autoSaveDelay: json['auto_save_delay'] as int?,
+      autosize: json['autosize'] as bool?,
+      debug: json['debug'] as bool?,
+      disabledFeatures: (json['disabled_features'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      drawingsAccess: json['drawings_access'] == null
+          ? null
+          : AccessList.fromJson(
+              json['drawings_access'] as Map<String, dynamic>),
+      enabledFeatures: (json['enabled_features'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      fullscreen: json['fullscreen'] as bool?,
+      height: json['height'] as int?,
+      locale: json['locale'] as String,
+      numericFormatting: json['numeric_formatting'] == null
+          ? null
+          : NumericFormattingParams.fromJson(
+              json['numeric_formatting'] as Map<String, dynamic>),
+      savedData: json['saved_data'] as Map<String, dynamic>?,
+      savedDataMetaInfo: json['saved_data_meta_info'] == null
+          ? null
+          : SavedStateMetaInfo.fromJson(
+              json['saved_data_meta_info'] as Map<String, dynamic>),
+      studiesAccess: json['studies_access'] == null
+          ? null
+          : AccessList.fromJson(json['studies_access'] as Map<String, dynamic>),
+      studyCountLimit: json['study_count_limit'] as int?,
+      symbolSearchRequestDelay: json['symbol_search_request_delay'] as int?,
+      timeframe: json['timeframe'] as String?,
+      timezone: _$enumDecodeNullable(_$TimezoneEnumMap, json['timezone']),
+      toolbarBg: json['toolbar_bg'] as String?,
+      width: json['width'] as int?,
+      chartsStorageUrl: json['charts_storage_url'] as String?,
+      chartsStorageApiVersion: json['charts_storage_api_version'] as String?,
+      clientId: json['client_id'] as String?,
+      userId: json['user_id'] as String?,
+      loadLastChart: json['load_last_chart'] as bool?,
+      studiesOverrides: json['studies_overrides'] as Map<String, dynamic>?,
+      overrides: json['overrides'] as Map<String, dynamic>?,
+      snapshotUrl: json['snapshot_url'] as String?,
+      preset: json['preset'] as String?,
+      timeFrames: json['time_frames'] == null
+          ? null
+          : TimeFrameItem.fromJson(json['time_frames'] as Map<String, dynamic>),
+      customCssUrl: json['custom_css_url'] as String?,
+      favorites: json['favorites'] == null
+          ? null
+          : Favorites.fromJson(json['favorites'] as Map<String, dynamic>),
+      loadingScreen: json['loading_screen'] == null
+          ? null
+          : LoadingScreenOptions.fromJson(
+              json['loading_screen'] as Map<String, dynamic>),
+      theme: _$enumDecodeNullable(_$ChartThemeEnumMap, json['theme']),
+      compareSymbols: (json['compare_symbols'] as List<dynamic>?)
+          ?.map((e) => CompareSymbol.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$ChartingLibraryWidgetOptionsToJson(
     ChartingLibraryWidgetOptions instance) {
@@ -485,13 +476,12 @@ const _$ChartThemeEnumMap = {
   ChartTheme.dark: 'Dark',
 };
 
-SavedStateMetaInfo _$SavedStateMetaInfoFromJson(Map<String, dynamic> json) {
-  return SavedStateMetaInfo(
-    uid: json['uid'] as int,
-    name: json['name'] as String,
-    description: json['description'] as String,
-  );
-}
+SavedStateMetaInfo _$SavedStateMetaInfoFromJson(Map<String, dynamic> json) =>
+    SavedStateMetaInfo(
+      uid: json['uid'] as int,
+      name: json['name'] as String,
+      description: json['description'] as String,
+    );
 
 Map<String, dynamic> _$SavedStateMetaInfoToJson(SavedStateMetaInfo instance) =>
     <String, dynamic>{
@@ -500,12 +490,11 @@ Map<String, dynamic> _$SavedStateMetaInfoToJson(SavedStateMetaInfo instance) =>
       'description': instance.description,
     };
 
-CompareSymbol _$CompareSymbolFromJson(Map<String, dynamic> json) {
-  return CompareSymbol(
-    symbol: json['symbol'] as String,
-    title: json['title'] as String,
-  );
-}
+CompareSymbol _$CompareSymbolFromJson(Map<String, dynamic> json) =>
+    CompareSymbol(
+      symbol: json['symbol'] as String,
+      title: json['title'] as String,
+    );
 
 Map<String, dynamic> _$CompareSymbolToJson(CompareSymbol instance) =>
     <String, dynamic>{
@@ -513,12 +502,12 @@ Map<String, dynamic> _$CompareSymbolToJson(CompareSymbol instance) =>
       'title': instance.title,
     };
 
-LoadingScreenOptions _$LoadingScreenOptionsFromJson(Map<String, dynamic> json) {
-  return LoadingScreenOptions(
-    foregroundColor: json['foregroundColor'] as String?,
-    backgroundColor: json['backgroundColor'] as String?,
-  );
-}
+LoadingScreenOptions _$LoadingScreenOptionsFromJson(
+        Map<String, dynamic> json) =>
+    LoadingScreenOptions(
+      foregroundColor: json['foregroundColor'] as String?,
+      backgroundColor: json['backgroundColor'] as String?,
+    );
 
 Map<String, dynamic> _$LoadingScreenOptionsToJson(
     LoadingScreenOptions instance) {
@@ -535,28 +524,26 @@ Map<String, dynamic> _$LoadingScreenOptionsToJson(
   return val;
 }
 
-Favorites _$FavoritesFromJson(Map<String, dynamic> json) {
-  return Favorites(
-    intervals:
-        (json['intervals'] as List<dynamic>).map((e) => e as String).toList(),
-    chartTypes:
-        (json['chartTypes'] as List<dynamic>).map((e) => e as String).toList(),
-  );
-}
+Favorites _$FavoritesFromJson(Map<String, dynamic> json) => Favorites(
+      intervals:
+          (json['intervals'] as List<dynamic>).map((e) => e as String).toList(),
+      chartTypes: (json['chartTypes'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+    );
 
 Map<String, dynamic> _$FavoritesToJson(Favorites instance) => <String, dynamic>{
       'intervals': instance.intervals,
       'chartTypes': instance.chartTypes,
     };
 
-TimeFrameItem _$TimeFrameItemFromJson(Map<String, dynamic> json) {
-  return TimeFrameItem(
-    text: json['text'] as String,
-    resolution: json['resolution'] as String,
-    description: json['description'] as String?,
-    title: json['title'] as String?,
-  );
-}
+TimeFrameItem _$TimeFrameItemFromJson(Map<String, dynamic> json) =>
+    TimeFrameItem(
+      text: json['text'] as String,
+      resolution: json['resolution'] as String,
+      description: json['description'] as String?,
+      title: json['title'] as String?,
+    );
 
 Map<String, dynamic> _$TimeFrameItemToJson(TimeFrameItem instance) {
   final val = <String, dynamic>{
@@ -576,11 +563,10 @@ Map<String, dynamic> _$TimeFrameItemToJson(TimeFrameItem instance) {
 }
 
 NumericFormattingParams _$NumericFormattingParamsFromJson(
-    Map<String, dynamic> json) {
-  return NumericFormattingParams(
-    decimalSign: json['decimal_sign'] as String,
-  );
-}
+        Map<String, dynamic> json) =>
+    NumericFormattingParams(
+      decimalSign: json['decimal_sign'] as String,
+    );
 
 Map<String, dynamic> _$NumericFormattingParamsToJson(
         NumericFormattingParams instance) =>
@@ -588,14 +574,12 @@ Map<String, dynamic> _$NumericFormattingParamsToJson(
       'decimal_sign': instance.decimalSign,
     };
 
-AccessList _$AccessListFromJson(Map<String, dynamic> json) {
-  return AccessList(
-    type: _$enumDecode(_$AccessListTypeEnumMap, json['type']),
-    tools: (json['tools'] as List<dynamic>)
-        .map((e) => AccessListItem.fromJson(e as Map<String, dynamic>))
-        .toList(),
-  );
-}
+AccessList _$AccessListFromJson(Map<String, dynamic> json) => AccessList(
+      type: _$enumDecode(_$AccessListTypeEnumMap, json['type']),
+      tools: (json['tools'] as List<dynamic>)
+          .map((e) => AccessListItem.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
 Map<String, dynamic> _$AccessListToJson(AccessList instance) =>
     <String, dynamic>{
@@ -608,12 +592,11 @@ const _$AccessListTypeEnumMap = {
   AccessListType.white: 'white',
 };
 
-AccessListItem _$AccessListItemFromJson(Map<String, dynamic> json) {
-  return AccessListItem(
-    name: json['name'] as String,
-    grayed: json['grayed'] as bool?,
-  );
-}
+AccessListItem _$AccessListItemFromJson(Map<String, dynamic> json) =>
+    AccessListItem(
+      name: json['name'] as String,
+      grayed: json['grayed'] as bool?,
+    );
 
 Map<String, dynamic> _$AccessListItemToJson(AccessListItem instance) {
   final val = <String, dynamic>{
