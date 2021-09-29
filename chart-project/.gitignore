@@ -118,4 +118,4 @@ dist
 .pnp.*
 
 /dist
-/src/charting-library
+/src/charting_library

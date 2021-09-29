@@ -1,4 +1,4 @@
-import * as TradingView from "./charting-library/charting_library";
+import * as TradingView from "./charting_library/charting_library";
 
 declare global {
   interface Window {
